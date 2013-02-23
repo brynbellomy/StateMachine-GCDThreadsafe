@@ -1,5 +1,17 @@
+
 PODS:
-  - Kiwi (1.1.0)
+- Kiwi (1.1.0)
+- libextobjc/EXTScope (0.2.5)
+- libextobjc/EXTSynthesize (0.2.5)
 
 DEPENDENCIES:
-  - Kiwi (~> 1.1.0)
+- Kiwi (~> 1.1.0)
+- libextobjc/EXTScope
+- libextobjc/EXTSynthesize
+
+SPEC CHECKSUMS:
+  libextobjc/EXTScope: 4a286cdbe966b6685b20a0a1444188a104ed3f40
+  libextobjc/EXTSynthesize: 4a286cdbe966b6685b20a0a1444188a104ed3f40
+  Kiwi: 9141d15cf4f52a2178139ea16722f021b4059906
+
+COCOAPODS: 0.16.2

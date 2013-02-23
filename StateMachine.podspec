@@ -21,5 +21,8 @@ Pod::Spec.new do |s|
     'StateMachine/LSStateMachineTypedefs.h',
     'StateMachine/LSStateMachineDynamicAdditions.h']
 
+  s.dependency 'libextobjc/EXTScope'
+  s.dependency 'libextobjc/EXTSynthesize'
+
   s.requires_arc = true
 end
