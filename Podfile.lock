@@ -1,17 +1,29 @@
 
 PODS:
+- BrynKit/GCDThreadsafe (1.1.0):
+  - libextobjc/EXTScope (>= 0.2.0)
 - Kiwi (1.1.0)
-- libextobjc/EXTScope (0.2.5)
-- libextobjc/EXTSynthesize (0.2.5)
+- libextobjc/EXTBlockMethod (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/EXTScope (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/EXTSynthesize (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/RuntimeExtensions (0.2.5)
 
 DEPENDENCIES:
+- BrynKit/GCDThreadsafe (>= 1.1.0)
 - Kiwi (~> 1.1.0)
-- libextobjc/EXTScope
-- libextobjc/EXTSynthesize
+- libextobjc/EXTBlockMethod (>= 0.2.5)
+- libextobjc/EXTScope (>= 0.2.5)
+- libextobjc/EXTSynthesize (>= 0.2.5)
 
 SPEC CHECKSUMS:
-  libextobjc/EXTScope: 4a286cdbe966b6685b20a0a1444188a104ed3f40
-  libextobjc/EXTSynthesize: 4a286cdbe966b6685b20a0a1444188a104ed3f40
+  BrynKit/GCDThreadsafe: 338ba4502f71fdef13d029c6185cf9c4ecbd7a31
+  libextobjc/EXTBlockMethod: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/EXTScope: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/EXTSynthesize: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/RuntimeExtensions: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
   Kiwi: 9141d15cf4f52a2178139ea16722f021b4059906
 
-COCOAPODS: 0.16.2
+COCOAPODS: 0.16.4

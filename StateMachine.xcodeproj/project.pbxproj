@@ -20,7 +20,6 @@
 		A066CFF6163D90190061797C /* LSEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF5163D90190061797C /* LSEvent.m */; };
 		A066CFF8163D94070061797C /* LSTransitionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF7163D94070061797C /* LSTransitionSpec.m */; };
 		A066CFFB163D941D0061797C /* LSTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFFA163D941D0061797C /* LSTransition.m */; };
-		C581326B16D933FD00BC1750 /* LSStateMachine+Threadsafe.m in Sources */ = {isa = PBXBuildFile; fileRef = C581326A16D933FD00BC1750 /* LSStateMachine+Threadsafe.m */; };
 		CD6EA69BB500469E9AEA1EF8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60426E9B6604E52ADD8A63F /* libPods.a */; };
 		FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */; };
 /* End PBXBuildFile section */
@@ -73,8 +72,7 @@
 		A0BBF3581648C2D600DED3C2 /* LSStateMachineTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineTypedefs.h; sourceTree = "<group>"; };
 		A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineMacros.h; sourceTree = "<group>"; };
 		B3F36D43D1564548965A5F07 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		C581326916D933FD00BC1750 /* LSStateMachine+Threadsafe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LSStateMachine+Threadsafe.h"; sourceTree = "<group>"; };
-		C581326A16D933FD00BC1750 /* LSStateMachine+Threadsafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LSStateMachine+Threadsafe.m"; sourceTree = "<group>"; };
+		C57BC1EA16DE23BA00B690E0 /* LSStative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStative.h; sourceTree = "<group>"; };
 		D60426E9B6604E52ADD8A63F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -139,9 +137,8 @@
 			isa = PBXGroup;
 			children = (
 				A001F2051630DB10002AEC31 /* Supporting Files */,
-				C581326916D933FD00BC1750 /* LSStateMachine+Threadsafe.h */,
-				C581326A16D933FD00BC1750 /* LSStateMachine+Threadsafe.m */,
 				A066CFEB163D84D00061797C /* LSStateMachine.h */,
+				C57BC1EA16DE23BA00B690E0 /* LSStative.h */,
 				A066CFEC163D84D00061797C /* LSStateMachine.m */,
 				A066CFF4163D90190061797C /* LSEvent.h */,
 				A066CFF5163D90190061797C /* LSEvent.m */,
@@ -316,7 +313,6 @@
 				A066CFF6163D90190061797C /* LSEvent.m in Sources */,
 				A066CFFB163D941D0061797C /* LSTransition.m in Sources */,
 				A05206BE164363FF00D5E855 /* LSStateMachineDynamicAdditions.m in Sources */,
-				C581326B16D933FD00BC1750 /* LSStateMachine+Threadsafe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

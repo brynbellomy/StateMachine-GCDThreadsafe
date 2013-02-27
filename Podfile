@@ -1,8 +1,9 @@
-platform :ios
+platform :ios, '5.1'
 
-pod 'libextobjc/EXTScope'
-pod 'libextobjc/EXTSynthesize'
+podspec :path => './StateMachine.podspec'
+
 
 target :StateMachineTests, :exclusive => true do
    pod 'Kiwi', '~> 1.1.0'
 end
+

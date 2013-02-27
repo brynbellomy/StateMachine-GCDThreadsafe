@@ -4,5 +4,6 @@
 #import "LSStateMachine.h"
 #import "LSStateMachineMacros.h"
 #import "LSStateMachineTypedefs.h"
+#import "LSStative.h"
 
 #endif

@@ -1,7 +1,11 @@
+
+#import <BrynKit/NSObject+GCDThreadsafe.h>
+#import <libextobjc/EXTScope.h>
+
 #import "Kiwi.h"
 #import "StateMachine.h"
 
-@interface Subscription : NSObject
+@interface Subscription : NSObject <LSStative>
 @property (nonatomic, retain) NSString *state;
 @property (nonatomic, retain) NSDate *terminatedAt;
 - (void) stopBilling;
@@ -24,26 +28,44 @@
 - (BOOL)canUnsuspend;
 - (BOOL)canTerminate;
 @end
-@implementation Subscription
+
+@implementation Subscription {
+    NSString *_state;
+}
+
+- (NSString *) state {
+    __block NSString *state;
+    [self runCriticalReadonlySection:^{
+        state = [_state copy];
+    }];
+    return state;
+}
+
+- (void) setState:(NSString *)state {
+    NSString *theState = [state copy];
+    [self runCriticalMutableSection:^{
+        _state = theState;
+    }];
+}
 
 STATE_MACHINE(^(LSStateMachine *sm) {
     sm.initialState = @"pending";
-    
+
     [sm addState:@"pending"];
     [sm addState:@"active"];
     [sm addState:@"suspended"];
     [sm addState:@"terminated"];
-    
+
     [sm when:@"activate"  transitionFrom:@"pending"   to:@"active"];
     [sm when:@"suspend"   transitionFrom:@"active"    to:@"suspended"];
     [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
     [sm when:@"terminate" transitionFrom:@"active"    to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
-    
+
     [sm before:@"terminate" do:^(Subscription *subscription){
         subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
     }];
-    
+
     [sm after:@"suspend" do:^(Subscription *subscription) {
         [subscription stopBilling];
     }];
@@ -69,19 +91,19 @@ context(@"given a Subscripion", ^{
     beforeEach(^{
         sut = [[Subscription alloc] init];
     });
-    
+
     describe(@"default state", ^{
         it(@"should be 'pending'", ^{
             [[sut.state should] equal: @"pending"];
         });
     });
-    
+
     describe(@"valid transitions", ^{
         describe(@"activate", ^{
             describe(@"from 'pending'", ^{
                 it(@"should change the state to 'active'", ^{
                     [sut activate];
-                    
+
                     [[sut.state should] equal:@"active"];
                 });
                 it(@"should return YES", ^{
@@ -97,7 +119,7 @@ context(@"given a Subscripion", ^{
                 it(@"should change the state to 'suspended'", ^{
                     [sut suspend];
                     [[sut.state should] equal:@"suspended"];
-                    
+
                 });
                 it(@"should return YES", ^{
                     [[theValue([sut suspend]) should] beYes];
@@ -147,7 +169,7 @@ context(@"given a Subscripion", ^{
             });
         });
     });
-    
+
     describe(@"invalid transitions", ^{
         describe(@"activate", ^{
             describe(@"from 'suspended", ^{
@@ -174,7 +196,7 @@ context(@"given a Subscripion", ^{
             });
         });
     });
-    
+
     describe(@"checking if it's in a state", ^{
         describe(@"isPending", ^{
             context(@"when 'pending'", ^{
@@ -203,7 +225,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut isPending]) should] beNo];
@@ -237,7 +259,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut isActive]) should] beNo];
@@ -271,7 +293,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut isSuspended]) should] beNo];
@@ -305,7 +327,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return YES", ^{
                     [[theValue([sut isTerminated]) should] beYes];
@@ -313,7 +335,7 @@ context(@"given a Subscripion", ^{
             });
         });
     });
-    
+
     describe(@"checking if an event will trigger a valid transition", ^{
         describe(@"canActivate", ^{
             context(@"when 'pending'", ^{
@@ -342,7 +364,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut canActivate]) should] beNo];
@@ -376,7 +398,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut canSuspend]) should] beNo];
@@ -410,7 +432,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut canUnsuspend]) should] beNo];
@@ -444,7 +466,7 @@ context(@"given a Subscripion", ^{
                 beforeEach(^{
                     [sut activate];
                     [sut terminate];
-                    
+
                 });
                 it(@"should return NO", ^{
                     [[theValue([sut canTerminate]) should] beNo];
@@ -458,7 +480,7 @@ context(@"given a Subscripion", ^{
                 describe(@"from 'pending'", ^{
                     it(@"should not set 'terminatedAt'", ^{
                         [sut activate];
-                        
+
                         [sut.terminatedAt shouldBeNil];
                     });
                 });
@@ -470,9 +492,9 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not set 'terminatedAt'", ^{
                         [sut suspend];
-                        
+
                         [sut.terminatedAt shouldBeNil];
-                        
+
                     });
                 });
             });
@@ -484,7 +506,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not set 'terminatedAt'", ^{
                         [sut unsuspend];
-                        
+
                         [sut.terminatedAt shouldBeNil];
                     });
                 });
@@ -496,7 +518,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should set 'terminatedAt'", ^{
                         [sut terminate];
-                        
+
                         [[sut.terminatedAt should] equal:[NSDate dateWithTimeIntervalSince1970:123123123]];
                     });
                 });
@@ -507,21 +529,21 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should set 'terminatedAt'", ^{
                         [sut terminate];
-                        
+
                         [[sut.terminatedAt should] equal:[NSDate dateWithTimeIntervalSince1970:123123123]];
                     });
                 });
             });
         });
     });
-    
+
     describe(@"after callbacks", ^{
         describe(@"call stopBilling", ^{
             describe(@"activate", ^{
                 describe(@"from 'pending'", ^{
                     it(@"should not call stopBillin'", ^{
                         [[[sut shouldNot] receive] stopBilling];
-                        
+
                         [sut activate];
                     });
                 });
@@ -533,7 +555,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should call stopBilling", ^{
                         [[[sut should] receive] stopBilling];
-                        
+
                         [sut suspend];
                     });
                 });
@@ -546,7 +568,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
-                        
+
                         [sut unsuspend];
                     });
                 });
@@ -558,7 +580,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
-                        
+
                         [sut terminate];
                     });
                 });
@@ -569,7 +591,7 @@ context(@"given a Subscripion", ^{
                     });
                     it(@"should not call stopBilling", ^{
                         [[[sut shouldNot] receive] stopBilling];
-                        
+
                         [sut terminate];
                     });
                 });
