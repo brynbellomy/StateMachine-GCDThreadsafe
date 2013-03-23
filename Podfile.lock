@@ -17,12 +17,16 @@ PODS:
 
 DEPENDENCIES:
 - BrynKit/GCDThreadsafe (>= 1.2.1)
-- BrynKit/Main (>= 1.2.1)
+- BrynKit/Main (from `~/projects/BrynKit/master')
 - Kiwi (~> 1.1.0)
 - libextobjc/EXTBlockMethod (>= 0.2.5)
 - libextobjc/EXTScope (>= 0.2.5)
 - libextobjc/EXTSynthesize (>= 0.2.5)
 - libextobjc/NSMethodSignature+EXT (>= 0.2.5)
+
+EXTERNAL SOURCES:
+  BrynKit/Main:
+    :local: ~/projects/BrynKit/master
 
 SPEC CHECKSUMS:
   BrynKit/GCDThreadsafe: 3425e75ad5c3d2b8a61decb60600d068bb7bea9f
