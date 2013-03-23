@@ -14,7 +14,6 @@ void LSStateMachineInitializeInstance(id<LSStative> self, SEL _cmd);
 
 // This is the implementation of all the event instance methods
 BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd) {
-//    __block BOOL success;
     BOOL success;
 
 //    @weakify(self);
