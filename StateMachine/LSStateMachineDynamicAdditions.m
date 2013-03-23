@@ -1,5 +1,5 @@
 #import <objc/runtime.h>
-#import <BrynKit/NSObject+GCDThreadsafe.h>
+#import <BrynKit/GCDThreadsafe.h>
 #import <libextobjc/EXTScope.h>
 
 #import "LSStateMachineDynamicAdditions.h"
@@ -14,13 +14,18 @@ void LSStateMachineInitializeInstance(id<LSStative> self, SEL _cmd);
 
 // This is the implementation of all the event instance methods
 BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd) {
-    __block BOOL success;
+//    __block BOOL success;
+    BOOL success;
 
-    NSString *eventName = NSStringFromSelector(_cmd);
+//    @weakify(self);
+//    [(NSObject *)self runCriticalReadonlySection:^{
+//        @strongify(self);
 
-    @weakify(self);
-    [(NSObject *)self runCriticalReadonlySection:^{
-        @strongify(self);
+    @synchronized (self) {
+        NSString *eventName = NSStringFromSelector(_cmd);
+
+        [(NSObject *)self willChangeValueForKey:@"state"];
+
         NSString *currentState = self.state;
         LSStateMachine *sm     = [[self class] performSelector:@selector(stateMachine)];
         NSString *nextState    = [sm nextStateFrom:currentState forEvent:eventName];
@@ -41,51 +46,63 @@ BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd) {
         } else {
             success = NO;
         }
-    }];
+
+        [(NSObject *)self didChangeValueForKey:@"state"];
+    }
+//    }];
+
     return success;
 }
 
 // This is the implementation of the initializeStateMachine instance method
 void LSStateMachineInitializeInstance(id<LSStative> self, SEL _cmd) {
-    @weakify(self);
-    [(NSObject *)self runCriticalMutableSection:^{
-        @strongify(self);
+//    @weakify(self);
+//    [(NSObject *)self runCriticalMutableSection:^{
+    @synchronized (self) {
+//        @strongify(self);
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         self.state = sm.initialState;
-    }];
+    }
+//    }];
 }
 
 // This is the implementation of all the is<StateName> instance methods
 BOOL LSStateMachineCheckState(id<LSStative> self, SEL _cmd) {
-    __block BOOL is;
+//    __block BOOL is;
+    BOOL is;
 
-    @weakify(self);
-    [(NSObject *)self runCriticalReadonlySection:^{
-        @strongify(self);
+//    @weakify(self);
+//    [(NSObject *)self runCriticalReadonlySection:^{
+//        @strongify(self);
+    @synchronized (self) {
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
-        is = [query isEqualToString:self.state];
-    }];
+        is = [query isEqualToString:[self.state lowercaseString]];
+    }
+//    }];
     return is;
 }
 
 // This is the implementation of all the can<EventName> instance methods
 BOOL LSStateMachineCheckCanTransition(id<LSStative> self, SEL _cmd) {
-    __block NSString *nextState;
+//    __block NSString *nextState;
+    NSString *nextState;
 
-    @weakify(self);
-    [(NSObject *)self runCriticalReadonlySection:^{
-        @strongify(self);
+//    @weakify(self);
+//    [(NSObject *)self runCriticalReadonlySection:^{
+//        @strongify(self);
+    @synchronized (self) {
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         NSString *currentState = self.state;
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
 
         nextState = [sm nextStateFrom:currentState forEvent:query];
-    }];
+    }
+//    }];
 
     return nextState != nil;
 }
 
-// This is called in the initilize class method in the STATE_MACHINE macro
+// This is called in the initialize class method in the STATE_MACHINE macro
 void LSStateMachineInitializeClass(Class klass) {
     LSStateMachine *sm = [klass performSelector:@selector(stateMachine)];
     for (LSEvent *event in sm.events) {

@@ -1,6 +1,6 @@
 platform :ios, '5.1'
 
-podspec :path => './StateMachine.podspec'
+podspec :path => './StateMachine-GCDThreadsafe.podspec'
 
 
 target :StateMachineTests, :exclusive => true do
