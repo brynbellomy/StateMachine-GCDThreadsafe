@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
   s.dependency 'libextobjc/EXTSynthesize', '>= 0.2.5'
   s.dependency 'libextobjc/EXTBlockMethod', '>= 0.2.5'
   s.dependency 'libextobjc/NSMethodSignature+EXT', '>= 0.2.5'
-  s.dependency 'BrynKit/Main', '>= 1.2.0'
-  s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.0'
+  s.dependency 'BrynKit/Main', '>= 1.2.1'
+  s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.1'
 
 end
