@@ -1,6 +1,13 @@
+#import <BrynKit/BrynKit.h>
+#import <BrynKit/GCDThreadsafe.h>
 #import "LSSubscripton.h"
 #import "StateMachine.h"
+
+@interface LSSubscripton ()
+@end
+
 @implementation LSSubscripton
+    @gcd_threadsafe
 
 STATE_MACHINE(^(LSStateMachine * sm) {
     sm.initialState = @"pending";
@@ -20,8 +27,14 @@ STATE_MACHINE(^(LSStateMachine * sm) {
 - (id)init {
     self = [super init];
     if (self) {
+        _queueCritical = dispatch_queue_create("LSSubscription critical queue", 0);
         [self initializeStateMachine];
     }
     return self;
 }
+
+
+
 @end
+
+

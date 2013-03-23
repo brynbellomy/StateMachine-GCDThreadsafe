@@ -1,15 +1,12 @@
 
 #import <BrynKit/BrynKit.h>
 #import <BrynKit/GCDThreadsafe.h>
-//#import <libextobjc/EXTScope.h>
 
 #import "Kiwi.h"
 #import "StateMachine.h"
 
-@interface Subscription : NSObject <GCDThreadsafe, LSStative>
-@property (nonatomic, retain) NSString *state;
+@interface Subscription : NSObject <SEThreadsafeStateMachine>
 @property (nonatomic, retain) NSDate *terminatedAt;
-@property (nonatomic, assign, readonly) dispatch_queue_t queueCritical;
 - (void) stopBilling;
 @end
 
@@ -31,24 +28,10 @@
 - (BOOL)canTerminate;
 @end
 
-@implementation Subscription {
-    NSString *_state;
-}
+@implementation Subscription
 
-- (NSString *) state {
-    __block NSString *state;
-    [self runCriticalReadonlySection:^{
-        state = [_state copy];
-    }];
-    return state;
-}
+@gcd_threadsafe
 
-- (void) setState:(NSString *)state {
-    NSString *theState = [state copy];
-    [self runCriticalMutableSection:^{
-        _state = theState;
-    }];
-}
 
 STATE_MACHINE(^(LSStateMachine *sm) {
     sm.initialState = @"pending";
@@ -86,56 +69,11 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     // Yeah, sure...
 }
 
-#pragma mark- GCDThreadsafe
-#pragma mark-
-
-/**
- * #### runCriticalMutableSection:
- *
- * Runs the given block on the critical section queue asynchronously, but as a barrier block
- * that blocks any other critical operations until it completes.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_barrier_async(self.queueCritical, blockCritical);
-    }
-}
-
-
-
-/**
- * #### runCriticalReadonlySection:
- *
- * Runs the given block on the critical section queue synchronously.
- *
- * @param {dispatch_block_t} blockCritical
- * @return {void}
- */
-
-- (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
-{
-    yssert(self.queueCritical != nil);
-
-    if (dispatch_get_current_queue() == self.queueCritical) {
-        blockCritical();
-    }
-    else {
-        dispatch_sync(self.queueCritical, blockCritical);
-    }
-}
-
 
 @end
+
+
+
 
 SPEC_BEGIN(StateMachineSpec)
 context(@"given a Subscripion", ^{
@@ -597,6 +535,7 @@ context(@"given a Subscripion", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut activate];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                 });
             });
@@ -609,6 +548,7 @@ context(@"given a Subscripion", ^{
                         [[[sut should] receive] stopBilling];
 
                         [sut suspend];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                 });
             });
@@ -617,11 +557,13 @@ context(@"given a Subscripion", ^{
                     beforeEach(^{
                         [sut activate];
                         [sut suspend];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut unsuspend];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                 });
             });
@@ -629,22 +571,26 @@ context(@"given a Subscripion", ^{
                 describe(@"from'active'", ^{
                     beforeEach(^{
                         [sut activate];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut terminate];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                 });
                 describe(@"from 'suspended'", ^{
                     beforeEach(^{
                         [sut activate];
                         [sut suspend];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                     it(@"should not call stopBilling", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut terminate];
+                        [sut runCriticalReadonlySection:^{}];
                     });
                 });
             });

@@ -1,7 +1,8 @@
 #import <Foundation/Foundation.h>
+#import <BrynKit/GCDThreadsafe.h>
+#import <LSStative.h>
 
-@interface LSSubscripton : NSObject
-@property (nonatomic, strong) NSString *state;
+@interface LSSubscripton : NSObject <SEThreadsafeStateMachine>
 @end
 
 @interface LSSubscripton (State)

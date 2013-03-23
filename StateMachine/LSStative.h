@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BrynKit/GCDThreadsafe.h>
 
 @protocol LSStative <NSObject>
+@required
+    @property (nonatomic, copy, readwrite) NSString *state;
+@end
 
-@property (nonatomic, copy, readwrite) NSString *state;
-
+@protocol SEThreadsafeStateMachine <LSStative, GCDThreadsafe>
 @end
