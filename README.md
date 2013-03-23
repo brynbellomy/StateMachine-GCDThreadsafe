@@ -15,7 +15,7 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
 ### As a [CocoaPod](http://cocoapods.org/)
 Just add this to your Podfile
 ```ruby
-pod 'StateMachine', '~> 0.1'
+pod 'StateMachine', '~> 2.0.0'
 ```
 
 ### Other approaches
