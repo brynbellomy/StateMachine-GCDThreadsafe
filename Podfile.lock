@@ -1,0 +1,32 @@
+PODS:
+  - BrynKit/GCDThreadsafe (1.2.1):
+    - BrynKit/Main
+    - libextobjc/EXTScope (>= 0.2.5)
+  - BrynKit/Main (1.2.1):
+    - libextobjc/EXTScope (>= 0.2.5)
+  - Kiwi (1.1.1)
+  - libextobjc/EXTBlockMethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSynthesize (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSMethodSignature+EXT (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.2.5)
+
+DEPENDENCIES:
+  - BrynKit/GCDThreadsafe (>= 1.2.1)
+  - BrynKit/Main (>= 1.2.1)
+  - Kiwi (~> 1.1.0)
+  - libextobjc/EXTBlockMethod (>= 0.2.5)
+  - libextobjc/EXTScope (>= 0.2.5)
+  - libextobjc/EXTSynthesize (>= 0.2.5)
+  - libextobjc/NSMethodSignature+EXT (>= 0.2.5)
+
+SPEC CHECKSUMS:
+  BrynKit: 168847a54e9767c070321aa70d0b1b9bcba1de65
+  Kiwi: ab0fa8d13b97dca05915e31df9b2d888d74ab717
+  libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+
+COCOAPODS: 0.17.0.rc6

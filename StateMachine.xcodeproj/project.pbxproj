@@ -71,7 +71,7 @@
 		A066CFFA163D941D0061797C /* LSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransition.m; sourceTree = "<group>"; };
 		A0BBF3581648C2D600DED3C2 /* LSStateMachineTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineTypedefs.h; sourceTree = "<group>"; };
 		A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineMacros.h; sourceTree = "<group>"; };
-		B3F36D43D1564548965A5F07 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		B3F36D43D1564548965A5F07 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C57BC1EA16DE23BA00B690E0 /* LSStative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStative.h; sourceTree = "<group>"; };
 		D60426E9B6604E52ADD8A63F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -228,7 +228,7 @@
 		A001F1F61630DB10002AEC31 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Luis Solano Bonet";
 			};
 			buildConfigurationList = A001F1F91630DB10002AEC31 /* Build configuration list for PBXProject "StateMachine" */;
@@ -356,6 +356,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -382,6 +385,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
