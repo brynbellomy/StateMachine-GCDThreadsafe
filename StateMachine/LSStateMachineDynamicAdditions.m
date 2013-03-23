@@ -7,24 +7,23 @@
 #import "LSEvent.h"
 #import "LSStative.h"
 
-extern void * LSStateMachineDefinitionKey;
+extern void *LSStateMachineDefinitionKey;
 
-BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd);
-void LSStateMachineInitializeInstance(id<LSStative> self, SEL _cmd);
+BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd);
+void LSStateMachineInitializeInstance(id<GCDThreadsafe, LSStative> self, SEL _cmd);
 
 // This is the implementation of all the event instance methods
-BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd) {
-    BOOL success;
+BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
+    __block BOOL success;
 
-//    @weakify(self);
-//    [(NSObject *)self runCriticalReadonlySection:^{
-//        @strongify(self);
+    [(NSObject *)self willChangeValueForKey:@"state"];
 
-    @synchronized (self) {
-        NSString *eventName = NSStringFromSelector(_cmd);
+    @weakify(self);
+    [self runCriticalReadonlySection:^{
+        @strongify(self);
 
-        [(NSObject *)self willChangeValueForKey:@"state"];
-
+//    @synchronized (self) {
+        NSString *eventName    = NSStringFromSelector(_cmd);
         NSString *currentState = self.state;
         LSStateMachine *sm     = [[self class] performSelector:@selector(stateMachine)];
         NSString *nextState    = [sm nextStateFrom:currentState forEvent:eventName];
@@ -46,57 +45,58 @@ BOOL LSStateMachineTriggerEvent(id<LSStative> self, SEL _cmd) {
             success = NO;
         }
 
-        [(NSObject *)self didChangeValueForKey:@"state"];
-    }
-//    }];
+//    }
+    }];
+
+    [(NSObject *)self didChangeValueForKey:@"state"];
 
     return success;
 }
 
 // This is the implementation of the initializeStateMachine instance method
-void LSStateMachineInitializeInstance(id<LSStative> self, SEL _cmd) {
-//    @weakify(self);
-//    [(NSObject *)self runCriticalMutableSection:^{
-    @synchronized (self) {
-//        @strongify(self);
+void LSStateMachineInitializeInstance(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
+    @weakify(self);
+    [self runCriticalMutableSection:^{
+//    @synchronized (self) {
+        @strongify(self);
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         self.state = sm.initialState;
-    }
-//    }];
+//    }
+    }];
 }
 
 // This is the implementation of all the is<StateName> instance methods
-BOOL LSStateMachineCheckState(id<LSStative> self, SEL _cmd) {
-//    __block BOOL is;
-    BOOL is;
+BOOL LSStateMachineCheckState(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
+    __block BOOL is;
+//    BOOL is;
 
-//    @weakify(self);
-//    [(NSObject *)self runCriticalReadonlySection:^{
-//        @strongify(self);
-    @synchronized (self) {
+    @weakify(self);
+    [self runCriticalReadonlySection:^{
+        @strongify(self);
+//    @synchronized (self) {
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
         is = [query isEqualToString:[self.state lowercaseString]];
-    }
-//    }];
+//    }
+    }];
     return is;
 }
 
 // This is the implementation of all the can<EventName> instance methods
-BOOL LSStateMachineCheckCanTransition(id<LSStative> self, SEL _cmd) {
-//    __block NSString *nextState;
-    NSString *nextState;
+BOOL LSStateMachineCheckCanTransition(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
+    __block NSString *nextState;
+//    NSString *nextState;
 
-//    @weakify(self);
-//    [(NSObject *)self runCriticalReadonlySection:^{
-//        @strongify(self);
-    @synchronized (self) {
+    @weakify(self);
+    [self runCriticalReadonlySection:^{
+        @strongify(self);
+//    @synchronized (self) {
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         NSString *currentState = self.state;
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
 
         nextState = [sm nextStateFrom:currentState forEvent:query];
-    }
-//    }];
+//    }
+    }];
 
     return nextState != nil;
 }
@@ -134,3 +134,6 @@ LSStateMachine * LSStateMachineSetDefinitionForClass(Class klass,void(^definitio
     return sm;
 
 }
+
+
+
