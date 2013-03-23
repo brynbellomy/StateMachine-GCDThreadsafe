@@ -10,6 +10,6 @@
 
 @protocol LSStative <NSObject>
 
-@property (nonatomic, strong, readwrite) NSString *state;
+@property (nonatomic, copy, readwrite) NSString *state;
 
 @end
