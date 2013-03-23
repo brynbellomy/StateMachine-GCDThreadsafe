@@ -1,13 +1,15 @@
 
-#import <BrynKit/NSObject+GCDThreadsafe.h>
+#import <BrynKit/BrynKit.h>
+#import <BrynKit/GCDThreadsafe.h>
 //#import <libextobjc/EXTScope.h>
 
 #import "Kiwi.h"
 #import "StateMachine.h"
 
-@interface Subscription : NSObject <LSStative>
+@interface Subscription : NSObject <GCDThreadsafe, LSStative>
 @property (nonatomic, retain) NSString *state;
 @property (nonatomic, retain) NSDate *terminatedAt;
+@property (nonatomic, assign, readonly) dispatch_queue_t queueCritical;
 - (void) stopBilling;
 @end
 
@@ -74,6 +76,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 - (id)init {
     self = [super init];
     if (self) {
+        _queueCritical = dispatch_queue_create("testing critical queue", 0);
         [self initializeStateMachine];
     }
     return self;
@@ -82,6 +85,55 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 - (void) stopBilling {
     // Yeah, sure...
 }
+
+#pragma mark- GCDThreadsafe
+#pragma mark-
+
+/**
+ * #### runCriticalMutableSection:
+ *
+ * Runs the given block on the critical section queue asynchronously, but as a barrier block
+ * that blocks any other critical operations until it completes.
+ *
+ * @param {dispatch_block_t} blockCritical
+ * @return {void}
+ */
+
+- (void) runCriticalMutableSection: (dispatch_block_t)blockCritical
+{
+    yssert(self.queueCritical != nil);
+
+    if (dispatch_get_current_queue() == self.queueCritical) {
+        blockCritical();
+    }
+    else {
+        dispatch_barrier_async(self.queueCritical, blockCritical);
+    }
+}
+
+
+
+/**
+ * #### runCriticalReadonlySection:
+ *
+ * Runs the given block on the critical section queue synchronously.
+ *
+ * @param {dispatch_block_t} blockCritical
+ * @return {void}
+ */
+
+- (void) runCriticalReadonlySection: (dispatch_block_t)blockCritical
+{
+    yssert(self.queueCritical != nil);
+
+    if (dispatch_get_current_queue() == self.queueCritical) {
+        blockCritical();
+    }
+    else {
+        dispatch_sync(self.queueCritical, blockCritical);
+    }
+}
+
 
 @end
 
@@ -601,3 +653,8 @@ context(@"given a Subscripion", ^{
 
 });
 SPEC_END
+
+
+
+
+
