@@ -1,0 +1,7 @@
+
+platform :ios, '5.1'
+
+pod 'BrynKit/Main', :local => '~/projects/BrynKit/master' # '>= 1.2.1'
+pod 'BrynKit/GCDThreadsafe', '>= 1.2.1'
+pod 'StateMachine-GCDThreadsafe', :local => '../'
+

@@ -1,0 +1,45 @@
+
+PODS:
+- BrynKit/GCDThreadsafe (1.2.1):
+  - libextobjc/EXTScope (>= 0.2.5)
+- BrynKit/Main (1.2.1):
+  - libextobjc/EXTScope (>= 0.2.5)
+- StateMachine-GCDThreadsafe (2.0.1):
+  - BrynKit/GCDThreadsafe (>= 1.2.1)
+  - BrynKit/Main (from `~/projects/BrynKit/master')
+  - libextobjc/EXTBlockMethod (>= 0.2.5)
+  - libextobjc/EXTScope (>= 0.2.5)
+  - libextobjc/EXTSynthesize (>= 0.2.5)
+  - libextobjc/NSMethodSignature+EXT (>= 0.2.5)
+- libextobjc/EXTBlockMethod (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/EXTScope (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/EXTSynthesize (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/NSMethodSignature+EXT (0.2.5):
+  - libextobjc/RuntimeExtensions
+- libextobjc/RuntimeExtensions (0.2.5)
+
+DEPENDENCIES:
+- BrynKit/GCDThreadsafe (>= 1.2.1)
+- BrynKit/Main (from `~/projects/BrynKit/master')
+- StateMachine-GCDThreadsafe (from `../')
+
+EXTERNAL SOURCES:
+  BrynKit/Main:
+    :local: ~/projects/BrynKit/master
+  StateMachine-GCDThreadsafe:
+    :local: ../
+
+SPEC CHECKSUMS:
+  BrynKit/GCDThreadsafe: 3425e75ad5c3d2b8a61decb60600d068bb7bea9f
+  BrynKit/Main: 3425e75ad5c3d2b8a61decb60600d068bb7bea9f
+  StateMachine-GCDThreadsafe: 0589c8bea6fa7383c17a913b7f24ebc546c46cc4
+  libextobjc/EXTBlockMethod: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/EXTScope: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/EXTSynthesize: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/NSMethodSignature+EXT: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  libextobjc/RuntimeExtensions: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+
+COCOAPODS: 0.16.4

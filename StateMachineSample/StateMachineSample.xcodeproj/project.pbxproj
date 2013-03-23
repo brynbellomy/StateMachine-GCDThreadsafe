@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19AEB7F58906465492EC6001 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA33EEFF2C664E58B42A680B /* libPods.a */; };
 		A051EBFE16449848007B9D8E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A051EBFD16449848007B9D8E /* UIKit.framework */; };
 		A051EC0016449848007B9D8E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A051EBFF16449848007B9D8E /* Foundation.framework */; };
 		A051EC0216449848007B9D8E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A051EC0116449848007B9D8E /* CoreGraphics.framework */; };
@@ -15,11 +16,11 @@
 		A051EC0E16449849007B9D8E /* LSAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A051EC0D16449849007B9D8E /* LSAppDelegate.m */; };
 		A051EC1116449849007B9D8E /* LSViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A051EC1016449849007B9D8E /* LSViewController.m */; };
 		A051EC1416449849007B9D8E /* LSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A051EC1216449849007B9D8E /* LSViewController.xib */; };
-		A051EC1E16449880007B9D8E /* libStateMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A051EC1D16449880007B9D8E /* libStateMachine.a */; };
 		A051EC24164499BF007B9D8E /* LSSubscripton.m in Sources */ = {isa = PBXBuildFile; fileRef = A051EC23164499BF007B9D8E /* LSSubscripton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		93F5139E7DFB4A008E77CE2F /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		A051EBF916449848007B9D8E /* StateMachineSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StateMachineSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A051EBFD16449848007B9D8E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A051EBFF16449848007B9D8E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -33,9 +34,9 @@
 		A051EC0F16449849007B9D8E /* LSViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSViewController.h; sourceTree = "<group>"; };
 		A051EC1016449849007B9D8E /* LSViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LSViewController.m; sourceTree = "<group>"; };
 		A051EC1316449849007B9D8E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LSViewController.xib; sourceTree = "<group>"; };
-		A051EC1D16449880007B9D8E /* libStateMachine.a */ = {isa = PBXFileReference; lastKnownFileType = file; name = libStateMachine.a; path = "../build/Release-iphoneos/libStateMachine.a"; sourceTree = "<group>"; };
 		A051EC22164499BF007B9D8E /* LSSubscripton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSSubscripton.h; sourceTree = "<group>"; };
 		A051EC23164499BF007B9D8E /* LSSubscripton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSSubscripton.m; sourceTree = "<group>"; };
+		CA33EEFF2C664E58B42A680B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,10 +44,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A051EC1E16449880007B9D8E /* libStateMachine.a in Frameworks */,
 				A051EBFE16449848007B9D8E /* UIKit.framework in Frameworks */,
 				A051EC0016449848007B9D8E /* Foundation.framework in Frameworks */,
 				A051EC0216449848007B9D8E /* CoreGraphics.framework in Frameworks */,
+				19AEB7F58906465492EC6001 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +60,7 @@
 				A051EC0316449848007B9D8E /* StateMachineSample */,
 				A051EBFC16449848007B9D8E /* Frameworks */,
 				A051EBFA16449848007B9D8E /* Products */,
+				93F5139E7DFB4A008E77CE2F /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -73,10 +75,10 @@
 		A051EBFC16449848007B9D8E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A051EC1D16449880007B9D8E /* libStateMachine.a */,
 				A051EBFD16449848007B9D8E /* UIKit.framework */,
 				A051EBFF16449848007B9D8E /* Foundation.framework */,
 				A051EC0116449848007B9D8E /* CoreGraphics.framework */,
+				CA33EEFF2C664E58B42A680B /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -117,6 +119,7 @@
 				A051EBF516449848007B9D8E /* Sources */,
 				A051EBF616449848007B9D8E /* Frameworks */,
 				A051EBF716449848007B9D8E /* Resources */,
+				A2D88B3D81E54230A2B349A3 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -165,6 +168,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A2D88B3D81E54230A2B349A3 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A051EBF516449848007B9D8E /* Sources */ = {
@@ -251,11 +271,20 @@
 		};
 		A051EC1816449849007B9D8E /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93F5139E7DFB4A008E77CE2F /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StateMachineSample/StateMachineSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../StateMachine/**";
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"$(INHERITED)",
+					../StateMachine,
+				);
 				INFOPLIST_FILE = "StateMachineSample/StateMachineSample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -263,11 +292,20 @@
 		};
 		A051EC1916449849007B9D8E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 93F5139E7DFB4A008E77CE2F /* Pods.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StateMachineSample/StateMachineSample-Prefix.pch";
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../StateMachine/**";
+				HEADER_SEARCH_PATHS = (
+					"${PODS_HEADERS_SEARCH_PATHS}",
+					"$(INHERITED)",
+					../StateMachine,
+				);
 				INFOPLIST_FILE = "StateMachineSample/StateMachineSample-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -292,6 +330,7 @@
 				A051EC1916449849007B9D8E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
