@@ -6,8 +6,8 @@
 Pod::Spec.new do |s|
   s.platform     = :ios, "5.1"
   s.name         = "StateMachine-GCDThreadsafe"
-  s.version      = "0.0.1"
-  s.summary      = "State machine library for Objective-C."
+  s.version      = "2.0.0"
+  s.summary      = "Threadsafe state machine library for Objective-C based on Grand Central Dispatch."
   s.homepage     = "https://github.com/brynbellomy/StateMachine-GCDThreadsafe"
   s.license      = { :type => 'MIT', :file => 'LICENSE' }
 
