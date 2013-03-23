@@ -1,53 +1,67 @@
-# StateMachine
 
-State machine library for Objective-C
+# // StateMachine-GCDThreadsafe
+
+Grand Central Dispatch-backed threadsafe state machine library for iOS.
 
 This library was inspired by the Ruby gem [state_machine](https://github.com/pluginaweek/state_machine).
 
-## Features
+## features
+
 * DSL for defining the state machine of your classes
 * Dynamically added methods to trigger events in the instances of your classes
 * Methods to query if an object is in a certain state (isActive, isPending, etc)
 * Methods to query wheter an event will trigger a valid transition or not (canActive, canSuspend, etc)
 * Transition callbacks. Execute arbitrary code before and after a transition occurs.
 
-## Installation
+## installation
+
 ### As a [CocoaPod](http://cocoapods.org/)
-Just add this to your Podfile
+
+Just add this to your `Podfile`:
+
 ```ruby
-pod 'StateMachine', '~> 0.1'
+pod 'StateMachine-GCDThreadsafe', '>= 2.0.0'
 ```
 
 ### Other approaches
-* You should be able to add StateMachine to you source tree. If you are using git, consider using a `git submodule`
 
-##Usage
+* You should be able to add StateMachine to your source tree.  Create an Xcode workspace containing your project and then import the `StateMachine-GCDThreadsafe` project into it.
+* If you are using git, consider using a `git submodule`.
+
+## Usage
 
 ### Defining the state machine of a class
 
-Let's model a Subscription class
+When defining your model class, make sure it implements the `SEThreadsafeStateMachine` protocol (in `LSStative.h` if you're curious).
 
-At this moment you are responsible of defining a state property like this. In the future this will be handle by StateMachine
+Let's model a `Subscription` class.  
 
-```objc
-@interface Subscription : NSObject
-@property (nonatomic, retain) NSString *state; // Property managed by StateMachine
+```objective-c
+@interface Subscription : NSObject <SEThreadsafeStateMachine>
 
 @property (nonatomic, retain) NSDate *terminatedAt;
+
 - (void) stopBilling;
+
 @end
 ```
 
-Here is the fun part. In the implementation of the class we use the StateMachine DSL to define the valid states and events. For each event you define which are the valid transitions.
+Here's the fun part.  In the implementation of the class, we use the `StateMachine` DSL to define our valid states and events.  _The DSL is a work in progress and will change._
 
-_The DSL is a work in progress and will change_
+**Three steps.**
 
-You also have to include a call to `initializeStateMachine` in you constructor(s) for the moment. The goal is to remove this limitation and be less intrusive.
+**one**. The `@gcd_threadsafe` macro (defined in `<BrynKit/GCDThreadsafe.h>`) must be placed within your `@implementation` block.  Preferably at the very top, so it's more self-documenting.  This macro defines a custom GCD-backed setter and getter for `state`, the property responsible for tracking the current state of the machine.
 
-```objc
+```objective-c
 @implementation Subscription
+@gcd_threadsafe
 
 STATE_MACHINE(^(LSStateMachine *sm) {
+```
+
+**two**. For each event, you define which are the valid transitions.
+
+```objective-c
     sm.initialState = @"pending";
     
     [sm addState:@"pending"];
@@ -69,8 +83,13 @@ STATE_MACHINE(^(LSStateMachine *sm) {
         [subscription stopBilling];
     }];
 });
+```
 
-- (id)init {
+**three**. Make sure you include a call to `-initializeStateMachine` in your designated initializer (`-init`, etc.).
+
+```objective-c
+- (id) init
+{
     self = [super init];
     if (self) {
         [self initializeStateMachine];
@@ -78,16 +97,17 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     return self;
 }
 
-- (void) stopBilling {
+- (void) stopBilling
+{
     // Yeah, sure...
 }
 
 @end
 ```
 
-StateMachine will methods to your class to trigger events. In order to make the compiler happy you need to tell it that this methods will be there at runtime. You can achieve this by defining the header of an Objective-C category with one method per event (returning BOOL) and the method `initializeStateMachine`. Just like this:
+**StateMachine** will methods to your class to trigger events.  In order to make the compiler happy you need to tell it that this methods will be there at runtime.  You can achieve this by defining the header of an Objective-C category with one method per event (returning BOOL) and the method `-initializeStateMachine`.  Just like this:
 
-```objc
+```objective-c
 @interface Subscription (State)
 - (void)initializeStateMachine;
 - (BOOL)activate;
@@ -107,41 +127,50 @@ StateMachine will methods to your class to trigger events. In order to make the 
 @end
 ```
 
-As you can see, StateMachine will define query methods to check if the object is in a certain state (isPending, isActive, etc) and to check whether an event will trigger a valid transition (canActivate, canSuspend, etc).
+In addition to your class's main `state` property being KVO-observable, **StateMachine** will define query methods to check if the object is in a certain state (`isPending`, `isActive`, etc.) and to check whether an event will trigger a valid transition (`canActivate`, `canSuspend`, etc).
 
 ### Triggering events
 
-Now you can create instances of your class as you would normally do
+Now you can create instances of your class as you would normally do:
 
-```objc
+```objective-c
 Subscription *subscription = [[Subscription alloc] init];
 ```
 
-It has an initialState of `pending`
+It has an initialState of `pending`.
 
-```objc
-subscription.state; // @"pending"
+```objective-c
+subscription.state;                 // @"pending"
 ```
 
-You can trigger events
-```objc
-[subscription activate]; // retuns YES because it's a valid transition
-subscription.state; // @"active"
+You can trigger events:
 
-[subscription suspend]; // retuns YES because it's a valid transition
-// Method stopBilling was called
-subscription.state; // @"suspended"
+```objective-c
+[subscription activate];            // retuns YES because it's a valid transition
+subscription.state;                 // @"active"
 
-[subscription terminate]; // retuns YES because it's a valid transition
-subscription.state; // @"terminated"
-subcription.terminatedAt; // [NSDate dateWithTimeIntervalSince1970:123123123];
+[subscription suspend];             // retuns YES because it's a valid transition
+
+//
+// Method stopBilling was called...
+//
+
+subscription.state;                 // @"suspended"
+
+[subscription terminate];           // retuns YES because it's a valid transition
+subscription.state;                 // @"terminated"
+subcription.terminatedAt;           // [NSDate dateWithTimeIntervalSince1970:123123123];
 ```
 
-If we trigger an invalid event
-```objc
+If we trigger an invalid event...
+
+```objective-c
+//
 // The subscription is now suspended
-[subscription activate]; // retuns NO because it's not a valid transition
-subscription.state; // @"suspended"
+//
+
+[subscription activate];            // returns NO because it's not a valid transition
+subscription.state;                 // @"suspended"
 ```
 
 ## Contributing
@@ -151,3 +180,5 @@ subscription.state; // @"suspended"
 3. Commit your changes
 4. Push to the branch
 5. Create new Pull Request
+
+
