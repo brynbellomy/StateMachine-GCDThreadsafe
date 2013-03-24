@@ -5,17 +5,31 @@ Grand Central Dispatch-backed threadsafe state machine library for iOS.
 
 This library was inspired by the Ruby gem [state_machine](https://github.com/pluginaweek/state_machine).
 
-## features
+## Features
 
-* DSL for defining the state machine of your classes
-* Dynamically added methods to trigger events in the instances of your classes
-* Methods to query if an object is in a certain state (isActive, isPending, etc)
-* Methods to query wheter an event will trigger a valid transition or not (canActive, canSuspend, etc)
-* Transition callbacks. Execute arbitrary code before and after a transition occurs.
+* All transition code executes within barrier blocks on a critical-section-only async dispatch queue.  You can submit your own blocks to this queue as well and everything will be automatically threadsafed.
+* Easy, block-based DSL for defining your classes' state machines.
+* Dynamically generates all state machine methods directly onto your classes using some Objective-C runtime voodoo jah.
+* Methods to query if an object is in a certain state (`isActive`, `isPending`, etc)
+* Methods to query whether an event will trigger a valid transition or not (`canActive`, `canSuspend`, etc.)
+* Transition callbacks.  Execute arbitrary code before and after a transition occurs.
 
-## installation
+### GCD threadsafe'ing (ah blarney queue)
+
+as long as you divide your critical sections into two groups:
+
+    + **"mutate" sections**
+        - can do anything EXCEPT read values out through the boundaries of the synchronizer queue.
+        - submitted as __asynchronous__ barrier blocks.  synchronized but don't necessarily run immediately.
+    + **"read" sections**
+        - can do anything, including read values through synchronizer queue boundaries.
+        - submitted as __synchronous__ barrier blocks.  synchronized and run immediately.
+
+## Installation
 
 ### As a [CocoaPod](http://cocoapods.org/)
+
+__Three options.__
 
 Just add this to your `Podfile`:
 
@@ -39,7 +53,7 @@ Let's model a `Subscription` class.
 ```objective-c
 @interface Subscription : NSObject <SEThreadsafeStateMachine>
 
-@property (nonatomic, retain) NSDate *terminatedAt;
+@property (nonatomic, strong, readwrite) NSDate *terminatedAt;
 
 - (void) stopBilling;
 
@@ -50,65 +64,66 @@ Here's the fun part.  In the implementation of the class, we use the `StateMachi
 
 **Three steps.**
 
-**one**. The `@gcd_threadsafe` macro (defined in `<BrynKit/GCDThreadsafe.h>`) must be placed within your `@implementation` block.  Preferably at the very top, so it's more self-documenting.  This macro defines a custom GCD-backed setter and getter for `state`, the property responsible for tracking the current state of the machine.
+1. The `@gcd_threadsafe` macro (defined in `<BrynKit/GCDThreadsafe.h>`) must be placed within your `@implementation` block.  Preferably at the very top, so it's more self-documenting.  This macro defines a custom GCD-backed setter and getter for `state`, the property responsible for tracking the current state of the machine.
 
-```objective-c
-@implementation Subscription
-@gcd_threadsafe
+    ```objective-c
+    @implementation Subscription
+    @gcd_threadsafe
+    STATE_MACHINE(^(LSStateMachine *sm) {
+    ```
 
-STATE_MACHINE(^(LSStateMachine *sm) {
-```
+2. For each event, you define which are the valid transitions.
 
-**two**. For each event, you define which are the valid transitions.
+    ```objective-c
+        sm.initialState = @"pending";
+        
+        [sm addState:@"pending"];
+        [sm addState:@"active"];
+        [sm addState:@"suspended"];
+        [sm addState:@"terminated"];
+        
+        [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
+        [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+        [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
+        [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
+        [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
+        
+        [sm before:@"terminate" do:^(Subscription *subscription){
+            subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
+        }];
+        
+        [sm after:@"suspend" do:^(Subscription *subscription) {
+            [subscription stopBilling];
+        }];
+    });
+    ```
 
-```objective-c
-    sm.initialState = @"pending";
-    
-    [sm addState:@"pending"];
-    [sm addState:@"active"];
-    [sm addState:@"suspended"];
-    [sm addState:@"terminated"];
-    
-    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
-    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
-    [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
-    [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
-    [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
-    
-    [sm before:@"terminate" do:^(Subscription *subscription){
-        subscription.terminatedAt = [NSDate dateWithTimeIntervalSince1970:123123123];
-    }];
-    
-    [sm after:@"suspend" do:^(Subscription *subscription) {
-        [subscription stopBilling];
-    }];
-});
-```
+3. Make sure you include a call to `-initializeStateMachine` in your designated initializer (`-init`, etc.).
 
-**three**. Make sure you include a call to `-initializeStateMachine` in your designated initializer (`-init`, etc.).
-
-```objective-c
-- (id) init
-{
-    self = [super init];
-    if (self) {
-        [self initializeStateMachine];
+    ```objective-c
+    - (id) init
+    {
+        self = [super init];
+        if (self) {
+            [self initializeStateMachine];
+        }
+        return self;
     }
-    return self;
-}
 
-- (void) stopBilling
-{
-    // Yeah, sure...
-}
+    - (void) stopBilling
+    {
+        // Yeah, sure...
+    }
 
-@end
-```
+    @end
+    ```
 
-**StateMachine** will methods to your class to trigger events.  In order to make the compiler happy you need to tell it that this methods will be there at runtime.  You can achieve this by defining the header of an Objective-C category with one method per event (returning BOOL) and the method `-initializeStateMachine`.  Just like this:
+### The metamorphosis    
+
+**StateMachine-GCDThreadsafe** will methods to your class to trigger events.  In order to make the compiler happy you need to tell it that this methods will be there at runtime.  You can achieve this by defining the header of an Objective-C category with one method per event (returning `BOOL`) and the method `-initializeStateMachine`.  Just like this:
 
 ```objective-c
-@interface Subscription (State)
+@interface Subscription (StateMachine)
 - (void)initializeStateMachine;
 - (BOOL)activate;
 - (BOOL)suspend;
@@ -152,7 +167,7 @@ subscription.state;                 // @"active"
 [subscription suspend];             // retuns YES because it's a valid transition
 
 //
-// Method stopBilling was called...
+// `-stopBilling` was called by `-suspend`, just above
 //
 
 subscription.state;                 // @"suspended"
@@ -175,10 +190,18 @@ subscription.state;                 // @"suspended"
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create new Pull Request
+1. Brush up on your [ReactiveCocoa](http://github.com/ReactiveCocoa/ReactiveCocoa).  That's the direction this fork of the code is overwhelmingly likely to head.
+2. Fork
+3. Create your feature branch
+4. Commit your changes
+5. Push to the branch
+6. Create new pull request
+
+
+
+# contributors
+
+- Luis Solano Bonet < <contact@luissolano.com> >, the original fork's author
+- bryn austin bellomy < <bryn@signals.io> >, a rookie, a failure
 
 
