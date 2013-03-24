@@ -24,10 +24,10 @@ STATE_MACHINE(^(LSStateMachine * sm) {
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
 })
 
-- (id)init {
+- (id) init {
     self = [super init];
     if (self) {
-        @gcd_threadsafe_init(SERIAL, "com.signalenvelope.StateMachineSample.Subscription.queueCritical");
+        @gcd_threadsafe_init(CONCURRENT, "com.signalenvelope.StateMachineSample.Subscription.queueCritical");
 
         yssert_notNil(_queueCritical)
         yssert_notNil(self.queueCritical)

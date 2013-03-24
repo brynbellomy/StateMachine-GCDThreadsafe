@@ -22,7 +22,6 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     [self runCriticalReadonlySection:^{
         @strongify(self);
 
-//    @synchronized (self) {
         NSString *eventName    = NSStringFromSelector(_cmd);
         NSString *currentState = self.state;
         LSStateMachine *sm     = [[self class] performSelector:@selector(stateMachine)];
@@ -44,8 +43,6 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
         } else {
             success = NO;
         }
-
-//    }
     }];
 
     [(NSObject *)self didChangeValueForKey:@"state"];
@@ -57,26 +54,21 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
 void LSStateMachineInitializeInstance(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     @weakify(self);
     [self runCriticalMutableSection:^{
-//    @synchronized (self) {
         @strongify(self);
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         self.state = sm.initialState;
-//    }
     }];
 }
 
 // This is the implementation of all the is<StateName> instance methods
 BOOL LSStateMachineCheckState(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     __block BOOL is;
-//    BOOL is;
 
     @weakify(self);
     [self runCriticalReadonlySection:^{
         @strongify(self);
-//    @synchronized (self) {
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
         is = [query isEqualToString:[self.state lowercaseString]];
-//    }
     }];
     return is;
 }
@@ -84,18 +76,15 @@ BOOL LSStateMachineCheckState(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
 // This is the implementation of all the can<EventName> instance methods
 BOOL LSStateMachineCheckCanTransition(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     __block NSString *nextState;
-//    NSString *nextState;
 
     @weakify(self);
     [self runCriticalReadonlySection:^{
         @strongify(self);
-//    @synchronized (self) {
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         NSString *currentState = self.state;
         NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
 
         nextState = [sm nextStateFrom:currentState forEvent:query];
-//    }
     }];
 
     return nextState != nil;

@@ -29,7 +29,6 @@
 @end
 
 @implementation Subscription
-
 @gcd_threadsafe
 
 
@@ -59,7 +58,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 - (id)init {
     self = [super init];
     if (self) {
-        _queueCritical = dispatch_queue_create("testing critical queue", 0);
+        @gcd_threadsafe_init(CONCURRENT, "StateMachineSpec critical queue");
         [self initializeStateMachine];
     }
     return self;
