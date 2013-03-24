@@ -4,42 +4,110 @@ Grand Central Dispatch-backed threadsafe state machine library for iOS.
 
 This library was inspired by the Ruby gem [state_machine](https://github.com/pluginaweek/state_machine).
 
+
 ## Features
 
-* All transition code executes within barrier blocks on a critical-section-only async dispatch queue.  You can submit your own blocks to this queue as well and everything will be automatically threadsafed.
-* Easy, block-based DSL for defining your classes' state machines.
-* Dynamically generates all state machine methods directly onto your classes using some Objective-C runtime voodoo jah.
+* __Threadsafe and FAST__.  All transition code executes within barrier blocks on a critical-section-only async dispatch queue.
+* You can submit your own blocks to this queue as well.  Everything will be threadsafed for you under the hood.
+* __Easy, block-based DSL__ for defining your classes' state machines.
+* __Less boilerplate to write__.  Dynamically generates all state machine methods directly onto your classes using some Objective-C runtime voodoo jah.
 * Methods to query if an object is in a certain state (`isActive`, `isPending`, etc)
 * Methods to query whether an event will trigger a valid transition or not (`canActive`, `canSuspend`, etc.)
-* Transition callbacks.  Execute arbitrary code before and after a transition occurs.
+* Block-based "before" and "after" transition hooks.
 
-### GCD threadsafe'ing (ah blarney queue)
+## a wee word aboat GCD threadsafe'ing (ah blarney queue)
 
-as long as you divide your critical sections into two groups:
+The GCD foundation upon which `StateMachine-GCDThreadsafe` relies is very simple, very concise, and very widely applicable.
+Its primary implementation resides in the [BrynKit library](http://github.com/brynbellomy/BrynKit) (also on CocoaPods),
+in `GCDThreadsafe.h`.
+
+The main idea here is that it more or less looks and acts like an old-school Objective-C `@synchronized` block (yeah, that's
+right, "old school" -- I'm forcefully phasing out `@synchronized` as of right nowish since that's some slow ass grandma shit).
+
+In practice, it sometimes looks like this:
+
+```objective-c
+@weakify(self);
+[self runCriticalMutableSection:^{
+    @strongify(self);
+    self.someProperty = @"a new value";
+    [self.otherProperty someMutationMethod];
+}];
+```
+
+...and sometimes like this:
+
+```objective-c
+__block NSString *synchronizedValue = nil;
+@weakify(self);
+[self runCriticalReadonlySection:^{
+    @strongify(self);
+    
+    synchronizedValue = [_someHiddenIvar copy];
+    
+    // mutation is fine in "read" sections.  obviously need to rename this method.
+    self.someProperty = @"a new value";
+}];
+NSLog(@"synchronizedValue = %@", synchronizedValue);
+```
+
+You can add this functionality to any class easily:
+
+1. `#import <StateMachine-GCDThreadsafe/LSStative.h>` (or the umbrella
+    header, `<StateMachine-GCDThreadsafe/StateMachine.h>`)
+    
+2. Add the `@gcd_threadsafe` macro/annotation to your class's `@implementation` block.  This macro
+    is syntactical fuckin maple syrup -- take a look at its definition so you know what's going down
+    in the trap.
+
+    ```objective-c
+    @implementation ScranglyBones
+    @gcd_threadsafe
+    
+    - (instancetype) initWithScrangleTums:(WangleBums *)tanglyChums
+    {
+    ```
+
+3. In your designated initializer, initialize `_queueCritical`, the private `dispatch_queue_t` ivar
+    on which shit's gonna be goin down.  And make sure you initialize it before doing anything else
+    or you might accidentally call methods that rely on GCD synchronization before it's had a chance
+    to get bootstrapped:
+    
+    ```objective-c
+    self = [super init];
+    if (self) {
+        _queueCritical = dispatch_queue_create("com.pton.queueCritical", 0);
+        // ...
+    ```
+
+As long as you divide your critical sections into two groups:
 
 + **"mutate" sections**
-    - can do anything EXCEPT read values out through the boundaries of the synchronizer queue.
-    - submitted as __asynchronous__ barrier blocks.  synchronized but don't necessarily run immediately.
+    - can write to anything  read values out through the boundaries of the synchronizer queue.
+    - dispatched as __async__ barrier blocks.  fast as lightning.  synchronized but don't
+      necessarily run immediately.
 + **"read" sections**
     - can do anything, including read values through synchronizer queue boundaries.
-    - submitted as __synchronous__ barrier blocks.  synchronized and run immediately.
+    - dispatched as __sync__ barrier blocks.  synchronized and run immediately.
+
+... the framework will (should? ... might???) line everything up as it oughta be.  This is an alpha release, to be
+sure, so I'd very much welcome any traffic that would like to make its way into the issue queue.
+
+
 
 ## Installation
 
-### As a [CocoaPod](http://cocoapods.org/)
+1. As a [CocoaPod](http://cocoapods.org/)
 
-__Three options.__
+    Just add this to your `Podfile`:
 
-Just add this to your `Podfile`:
+    ```ruby
+    pod 'StateMachine-GCDThreadsafe', '>= 2.0.0'
+    ```
 
-```ruby
-pod 'StateMachine-GCDThreadsafe', '>= 2.0.0'
-```
-
-### Other approaches
-
-* You should be able to add StateMachine to your source tree.  Create an Xcode workspace containing your project and then import the `StateMachine-GCDThreadsafe` project into it.
-* If you are using git, consider using a `git submodule`.
+2. __The direct approach__.  You should be able to add StateMachine to your source tree.  Create an Xcode
+    workspace containing your project and then import the `StateMachine-GCDThreadsafe` project into it.
+3. __The indirect approach__. If you are using git, consider using a `git submodule`.
 
 ## Usage
 
