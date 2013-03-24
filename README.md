@@ -1,4 +1,3 @@
-
 # // StateMachine-GCDThreadsafe
 
 Grand Central Dispatch-backed threadsafe state machine library for iOS.
@@ -18,12 +17,12 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
 
 as long as you divide your critical sections into two groups:
 
-    + **"mutate" sections**
-        - can do anything EXCEPT read values out through the boundaries of the synchronizer queue.
-        - submitted as __asynchronous__ barrier blocks.  synchronized but don't necessarily run immediately.
-    + **"read" sections**
-        - can do anything, including read values through synchronizer queue boundaries.
-        - submitted as __synchronous__ barrier blocks.  synchronized and run immediately.
++ **"mutate" sections**
+    - can do anything EXCEPT read values out through the boundaries of the synchronizer queue.
+    - submitted as __asynchronous__ barrier blocks.  synchronized but don't necessarily run immediately.
++ **"read" sections**
+    - can do anything, including read values through synchronizer queue boundaries.
+    - submitted as __synchronous__ barrier blocks.  synchronized and run immediately.
 
 ## Installation
 
@@ -120,7 +119,7 @@ Here's the fun part.  In the implementation of the class, we use the `StateMachi
 
 ### The metamorphosis    
 
-**StateMachine-GCDThreadsafe** will methods to your class to trigger events.  In order to make the compiler happy you need to tell it that this methods will be there at runtime.  You can achieve this by defining the header of an Objective-C category with one method per event (returning `BOOL`) and the method `-initializeStateMachine`.  Just like this:
+**StateMachine-GCDThreadsafe** will dynamically add methods to your class to trigger events.  In order to keep the compiler quiet, you need to tell it that these methods can be expected to exist at runtime.  How?  Simply define a class category.  You can define it in your implementation file (if the methods need to be private), in your header (if they ought to be publicly callable), or spit between the two.
 
 ```objective-c
 @interface Subscription (StateMachine)
@@ -188,18 +187,18 @@ If we trigger an invalid event...
 subscription.state;                 // @"suspended"
 ```
 
-## Contributing
+# Contributing
 
-1. Brush up on your [ReactiveCocoa](http://github.com/ReactiveCocoa/ReactiveCocoa).  That's the direction this fork of the code is overwhelmingly likely to head.
-2. Fork
-3. Create your feature branch
-4. Commit your changes
-5. Push to the branch
-6. Create new pull request
+1. Brush up on your [ReactiveCocoa](http://github.com/ReactiveCocoa/ReactiveCocoa).  That's the direction that this fork of the code is overwhelmingly likely to head.
+2. Fork this project.
+3. Create a new feature branch.
+4. Commit your changes.
+5. Push to the branch.
+6. Create new pull request.
 
 
 
-# contributors
+# Top scores
 
 - Luis Solano Bonet < <contact@luissolano.com> >, the original fork's author
 - bryn austin bellomy < <bryn@signals.io> >, a rookie, a failure
