@@ -7,7 +7,7 @@
 @end
 
 @implementation LSSubscripton
-    @gcd_threadsafe
+@gcd_threadsafe
 
 STATE_MACHINE(^(LSStateMachine * sm) {
     sm.initialState = @"pending";
@@ -27,7 +27,12 @@ STATE_MACHINE(^(LSStateMachine * sm) {
 - (id)init {
     self = [super init];
     if (self) {
-        _queueCritical = dispatch_queue_create("LSSubscription critical queue", 0);
+        @gcd_threadsafe_init(SERIAL, "com.signalenvelope.StateMachineSample.Subscription.queueCritical");
+
+        yssert_notNil(_queueCritical)
+        yssert_notNil(self.queueCritical)
+        yssert(self.queueCritical == _queueCritical);
+
         [self initializeStateMachine];
     }
     return self;
