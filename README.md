@@ -74,11 +74,13 @@ STATE_MACHINE(^(LSStateMachine *sm) {
     
     [sm addState:@"pending"];
     [sm addState:@"active"];
+    [sm addState:@"waitingOnSomething"];
     [sm addState:@"suspended"];
     [sm addState:@"terminated"];
     
-    [sm when:@"activate" transitionFrom:@"pending" to:@"active"];
-    [sm when:@"suspend" transitionFrom:@"active" to:@"suspended"];
+    [sm when:@"startWaiting" transitionFrom:@"active" to:@"waitingOnSomething"];
+    [sm when:@"activate"  transitionFrom:@"pending" to:@"active"];
+    [sm when:@"suspend"   transitionFrom:@"active" to:@"suspended"];
     [sm when:@"unsuspend" transitionFrom:@"suspended" to:@"active"];
     [sm when:@"terminate" transitionFrom:@"active" to:@"terminated"];
     [sm when:@"terminate" transitionFrom:@"suspended" to:@"terminated"];
