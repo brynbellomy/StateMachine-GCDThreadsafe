@@ -1,5 +1,4 @@
 
-
 # // StateMachine-GCDThreadsafe
 
 Grand Central Dispatch-backed threadsafe state machine library for iOS.
@@ -179,7 +178,22 @@ subscription.state;                 // @"suspended"
     
 # is it re-entrant?
 
-duh, son, c'mon now
+duh, son, c'mon now.
+
+
+
+# tips n' tricks
+
+1. It's almost always a BAD, BAD idea to `dispatch_sync(...)` a synchronous block to the main queue from inside
+   one of your critical section blocks.  Why?  If the main thread happens to be waiting on your critical section
+   code before moving forward, you'll deadlock.  You should generally be sending things to the main queue that
+   don't need to be synchronous (UI updates, certain kinds of NSNotifications, KVO messages, etc.).  If
+   it seems impossible to rewrite your main thread code in an asynchronous way, you may have an architectural
+   problem.
+2. If you're implementing a GCD-threadsafe `StateMachine` on one of your `UIViewController`s, keep in mind
+   all of `UIViewController`'s `-viewDidX...` and `-viewWillY...` methods are called from the main thread.  Given
+   tip #1 just above, this means that you have to be especially careful of deadlocks in `UIViewController` state
+   machines (and in `GCDThreadsafe` code inside these `UIViewController` methods more generally).
 
 
 
