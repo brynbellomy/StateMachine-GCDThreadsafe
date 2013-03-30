@@ -1,4 +1,3 @@
-
 # // StateMachine-GCDThreadsafe
 
 Grand Central Dispatch-backed threadsafe state machine library for iOS.
@@ -19,9 +18,9 @@ This library was inspired by the Ruby gem [state_machine](https://github.com/plu
     
 1. __[CocoaPods](http://cocoapods.org/) is the way and the light__.  Just add to your `Podfile`:
 
-    ```ruby
-    pod 'StateMachine-GCDThreadsafe', '>= 2.0.0'
-    ```
+```ruby
+pod 'StateMachine-GCDThreadsafe', '>= 2.0.0'
+```
 
 2. __The direct approach__.  You should be able to add StateMachine to your source tree.  Create an Xcode workspace containing your project and then import the `StateMachine-GCDThreadsafe` project into it.
 3. __The indirect approach__. If you are using git, consider using a `git submodule`.
@@ -39,7 +38,7 @@ Let's model a `Subscription` class.
 Declare your class to conform to the `SEThreadsafeStateMachine` protocol (which is defined in
 `LSStative.h`, if you're curious).
 
-```objective-c
+```objc
 @interface Subscription : NSObject <SEThreadsafeStateMachine>
 @property (nonatomic, strong, readwrite) NSDate *terminatedAt;
 - (void) stopBilling;
@@ -52,7 +51,7 @@ Declare your class to conform to the `SEThreadsafeStateMachine` protocol (which 
 
 *This macro defines a couple of methods on your class for dispatching critical section code onto `self.queueCritical` -- the show-stopper, the main attraction -- the private `dispatch_queue_t` on which shit be GITTAN RIAL.*
 
-```objective-c
+```objc
 #import <BrynKit/GCDThreadsafe.h>
 
 @implementation Subscription
@@ -69,7 +68,7 @@ In the implementation of the class, we use the `StateMachine` DSL to define our 
 1. _"I'onno mate I think i'ss quite nice, really"_ - [@brynbellomy](http://github.com/brynbellomy)
 1. Conclusion: \*shrug\*
 
-```objective-c
+```objc
 STATE_MACHINE(^(LSStateMachine *sm) {
     sm.initialState = @"pending";
     
@@ -102,7 +101,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 2. __Call `[self initializeStateMachine]`__ right after that.
 3. C'mon just do it
 
-```objective-c
+```objc
 - (id) init
 {
     self = [super init];
@@ -120,7 +119,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 Once given a particular configuration of transitions and states, __StateMachine-GCDThreadsafe__ will dynamically add the appropriate methods to your class to reflect that configuration.  You'll find yourself facing a few compiler warnings regarding these methods.  Wanna shut the compiler up?  Easy enough: __define a class category and don't implement it__.  The category can live hidden inside your implementation file (if the methods need to be private), in your header file (if the methods ought to be publicly callable), or split between the two.
 
-```objective-c
+```objc
 @interface Subscription (StateMachine)
 - (void)initializeStateMachine;
 - (BOOL)activate;
@@ -144,14 +143,14 @@ In addition to your class's main `state` property being KVO-observable, **StateM
 
 ### triggering events
 
-```objective-c
+```objc
 Subscription *subscription = [[Subscription alloc] init];
 subscription.state;                 // will be set to @"pending", the value of the initialState property
 ```
 
 Start triggering events...
 
-```objective-c
+```objc
 [subscription activate];            // retuns YES because it's a valid transition
 subscription.state;                 // @"active"
 
@@ -168,7 +167,7 @@ subscription.terminatedAt;           // [NSDate dateWithTimeIntervalSince1970:12
 
 But!  If we trigger an invalid event...
 
-```objective-c
+```objc
 // the subscription is now suspended
 
 [subscription activate];            // returns NO because it's not a valid transition
@@ -185,10 +184,10 @@ duh, son, c'mon now.
 # tips n' tricks
 
 1. It's almost always a BAD, BAD idea to `dispatch_sync(...)` a synchronous block to the main queue from inside
-   one of your critical section blocks.  Why?  If the main thread happens to be waiting on your critical section
-   code before moving forward, you'll deadlock.  You should generally be sending things to the main queue that
-   don't need to be synchronous (UI updates, certain kinds of NSNotifications, KVO messages, etc.).  If
-   it seems impossible to rewrite your main thread code in an asynchronous way, you may have an architectural
+   one of your transition or critical section blocks.  Why?  If the main thread happens to be waiting on your
+   critical section code before moving forward, you'll deadlock.  You should generally be sending things to the
+   main queue that don't need to be synchronous (UI updates, certain kinds of NSNotifications, KVO messages, etc.).
+   If it seems impossible to rewrite your main thread code in an asynchronous way, you may have an architectural
    problem.
 2. If you're implementing a GCD-threadsafe `StateMachine` on one of your `UIViewController`s, keep in mind
    all of `UIViewController`'s `-viewDidX...` and `-viewWillY...` methods are called from the main thread.  Given
