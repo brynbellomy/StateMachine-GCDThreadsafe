@@ -1,6 +1,11 @@
+
 #import "LSEvent.h"
+#import "StateMachine-Private.h"
+
+
 
 @implementation LSEvent
+
 + (id)eventWithName:(NSString *)name transitions:(NSSet *)transitions{
     return [[self alloc] initWithName:name transitions:transitions];
 }

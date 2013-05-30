@@ -1,41 +1,89 @@
-
 PODS:
-- BrynKit/GCDThreadsafe (1.2.1):
-  - libextobjc/EXTScope (>= 0.2.5)
-- BrynKit/Main (1.2.1):
-  - libextobjc/EXTScope (>= 0.2.5)
-- Kiwi (1.1.1)
-- libextobjc/EXTBlockMethod (0.2.5):
-  - libextobjc/RuntimeExtensions
-- libextobjc/EXTScope (0.2.5):
-  - libextobjc/RuntimeExtensions
-- libextobjc/EXTSynthesize (0.2.5):
-  - libextobjc/RuntimeExtensions
-- libextobjc/NSMethodSignature+EXT (0.2.5):
-  - libextobjc/RuntimeExtensions
-- libextobjc/RuntimeExtensions (0.2.5)
+  - BrynKit/CocoaLumberjack (1.2.6):
+    - BrynKit/EDColor
+    - BrynKit/Main
+    - CocoaLumberjack
+    - libextobjc/EXTScope (>= 0.2.5)
+    - ObjectiveSugar
+  - BrynKit/EDColor (1.2.6):
+    - BrynKit/Main
+    - EDColor
+    - libextobjc/EXTScope (>= 0.2.5)
+    - ObjectiveSugar
+  - BrynKit/GCDThreadsafe (1.2.6):
+    - BrynKit/Main
+    - libextobjc/EXTScope (>= 0.2.5)
+    - ObjectiveSugar
+  - BrynKit/Main (1.2.6):
+    - libextobjc/EXTScope (>= 0.2.5)
+    - ObjectiveSugar
+  - BrynKit/RACHelpers (1.2.6):
+    - BrynKit/EDColor
+    - BrynKit/Main
+    - libextobjc/EXTScope (>= 0.2.5)
+    - ObjectiveSugar
+    - ReactiveCocoa (>= 1.8.0)
+  - CocoaLumberjack (1.6.2)
+  - EDColor (0.2.0)
+  - FlatUIKit (1.1)
+  - JRSwizzle (1.0)
+  - Kiwi (1.1.1)
+  - libextobjc/EXTBlockMethod (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTConcreteProtocol (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTKeyPathCoding (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTScope (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/EXTSynthesize (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/NSMethodSignature+EXT (0.2.5):
+    - libextobjc/RuntimeExtensions
+  - libextobjc/RuntimeExtensions (0.2.5)
+  - ObjectiveSugar (0.7)
+  - ReactiveCocoa (1.8.1):
+    - ReactiveCocoa/Core
+    - ReactiveCocoa/RACExtensions
+  - ReactiveCocoa/Core (1.8.1):
+    - JRSwizzle (~> 1.0)
+    - libextobjc/EXTConcreteProtocol (~> 0.2.5)
+    - libextobjc/EXTKeyPathCoding (~> 0.2.5)
+    - libextobjc/EXTScope (~> 0.2.5)
+  - ReactiveCocoa/RACExtensions (1.8.1):
+    - ReactiveCocoa/Core
+  - StateMachine-GCDThreadsafe (2.0.3):
+    - BrynKit/CocoaLumberjack
+    - BrynKit/GCDThreadsafe
+    - BrynKit/Main
+    - BrynKit/RACHelpers
+    - libextobjc/EXTBlockMethod (>= 0.2.5)
+    - libextobjc/EXTScope (>= 0.2.5)
+    - libextobjc/EXTSynthesize (>= 0.2.5)
+    - libextobjc/NSMethodSignature+EXT (>= 0.2.5)
 
 DEPENDENCIES:
-- BrynKit/GCDThreadsafe (>= 1.2.1)
-- BrynKit/Main (from `~/projects/BrynKit/master')
-- Kiwi (~> 1.1.0)
-- libextobjc/EXTBlockMethod (>= 0.2.5)
-- libextobjc/EXTScope (>= 0.2.5)
-- libextobjc/EXTSynthesize (>= 0.2.5)
-- libextobjc/NSMethodSignature+EXT (>= 0.2.5)
+  - BrynKit/Main (from `~/projects/BrynKit/master`)
+  - FlatUIKit
+  - Kiwi (~> 1.1.0)
+  - StateMachine-GCDThreadsafe (from `.`)
 
 EXTERNAL SOURCES:
-  BrynKit/Main:
-    :local: ~/projects/BrynKit/master
+  BrynKit:
+    :path: ~/projects/BrynKit/master
+  StateMachine-GCDThreadsafe:
+    :path: .
 
 SPEC CHECKSUMS:
-  BrynKit/GCDThreadsafe: 3425e75ad5c3d2b8a61decb60600d068bb7bea9f
-  BrynKit/Main: 3425e75ad5c3d2b8a61decb60600d068bb7bea9f
-  libextobjc/EXTBlockMethod: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
-  libextobjc/EXTScope: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
-  libextobjc/EXTSynthesize: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
-  libextobjc/NSMethodSignature+EXT: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
-  libextobjc/RuntimeExtensions: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  BrynKit: 102de7a8dab5b5ade9ee1229a2585c79e7e3310d
+  CocoaLumberjack: d73e1e317ced14ab930797dda6c17156ff17aaa1
+  EDColor: ed4dec30508a1443971ba4148ed2ba9fdde45bc5
+  FlatUIKit: 3b15b582ffcfa4e392bedc4d3c5461f9b11c1cc2
+  JRSwizzle: 6242ff38485d870fc2636899048ee1ab883ae587
   Kiwi: ab0fa8d13b97dca05915e31df9b2d888d74ab717
+  libextobjc: 2cbc74caf8bdc74a86fdf24673f773c83424ea98
+  ObjectiveSugar: 2c2835034d5ec0d27f66905f63465490e3b8e1e7
+  ReactiveCocoa: 396e260e68f7a6ba3855b4486009381e0dc02cc3
+  StateMachine-GCDThreadsafe: 20c59140d85e7924311de9059b114a9324f99743
 
-COCOAPODS: 0.16.4
+COCOAPODS: 0.20.2

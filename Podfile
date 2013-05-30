@@ -1,8 +1,14 @@
 platform :ios, '5.1'
 
-podspec :path => './StateMachine-GCDThreadsafe.podspec'
+pod 'FlatUIKit'
+pod 'StateMachine-GCDThreadsafe', :path => '.'
+pod 'BrynKit/Main' , :path => '~/projects/BrynKit/master'
 
-target :StateMachineTests do
+# the podspec
+#podspec :path => './StateMachine-GCDThreadsafe.podspec'
+
+
+target :StateMachineTests, :exclusive => true do
    pod 'Kiwi', '~> 1.1.0'
 end
 

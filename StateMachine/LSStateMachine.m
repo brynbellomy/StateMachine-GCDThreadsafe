@@ -2,18 +2,33 @@
 #import "LSEvent.h"
 #import "LSTransition.h"
 #import "LSStateMachineTypedefs.h"
+#import "StateMachine-Private.h"
+
 
 void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
+
+
 
 @interface LSStateMachine ()
 - (LSEvent *)eventWithName:(NSString *)name;
 @end
 
+
+
 @interface LSStateMachine ()
 @property (nonatomic, strong) NSMutableSet *mutableStates;
 @property (nonatomic, strong) NSMutableSet *mutableEvents;
 @end
+
+
+
 @implementation LSStateMachine
+
+static int logLevel = LOG_LEVEL_VERBOSE;
++ (int)  ddLogLevel               { return logLevel; }
++ (void) ddSetLogLevel:(int)level { logLevel = level; }
+
+
 - (id)init {
     self = [super init];
     if (self) {
@@ -22,6 +37,7 @@ void * LSStateMachineDefinitionKey = &LSStateMachineDefinitionKey;
     }
     return self;
 }
+
 - (void)addState:(NSString *)state {
     [self.mutableStates addObject:state];
     if (!self.initialState) {

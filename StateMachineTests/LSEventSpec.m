@@ -29,7 +29,7 @@ context(@"given an event with a name, a transition and before and after callback
         
         context(@"when adding a duplicate transition", ^{
             it(@"should not add it the second time", ^{
-                LSEvent *result =[event addTransition:[LSTransition transitionFrom:@"pending" to:@"active"]];
+                LSEvent *result = [event addTransition:[LSTransition transitionFrom:@"pending" to:@"active"]];
                 result = [event addTransition:[LSTransition transitionFrom:@"pending" to:@"active"]];
                 
                 [[result.transitions should] haveCountOf:2];

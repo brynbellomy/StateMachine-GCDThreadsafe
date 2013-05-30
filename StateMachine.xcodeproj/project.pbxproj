@@ -13,19 +13,26 @@
 		A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A001F1FF1630DB10002AEC31 /* libStateMachine.a */; };
 		A001F21E1630DB11002AEC31 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A001F21C1630DB11002AEC31 /* InfoPlist.strings */; };
 		A001F2211630DB11002AEC31 /* StateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A001F2201630DB11002AEC31 /* StateMachineSpec.m */; };
-		A05206BE164363FF00D5E855 /* LSStateMachineDynamicAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = A05206BD164363FF00D5E855 /* LSStateMachineDynamicAdditions.m */; };
-		A066CFED163D84D00061797C /* LSStateMachine.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEC163D84D00061797C /* LSStateMachine.m */; };
 		A066CFEF163D850B0061797C /* LSStateMachineSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFEE163D850B0061797C /* LSStateMachineSpec.m */; };
 		A066CFF3163D8FF50061797C /* LSEventSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF2163D8FF50061797C /* LSEventSpec.m */; };
-		A066CFF6163D90190061797C /* LSEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF5163D90190061797C /* LSEvent.m */; };
 		A066CFF8163D94070061797C /* LSTransitionSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFF7163D94070061797C /* LSTransitionSpec.m */; };
-		A066CFFB163D941D0061797C /* LSTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A066CFFA163D941D0061797C /* LSTransition.m */; };
+		C59F9A211757A3B200C175D5 /* stub.m in Sources */ = {isa = PBXBuildFile; fileRef = C59F9A201757A3B200C175D5 /* stub.m */; };
+		C5C267A11757A432005BBB4A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A01757A432005BBB4A /* CoreGraphics.framework */; };
+		C5C267A31757A43E005BBB4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A21757A43E005BBB4A /* UIKit.framework */; };
+		C5C267A41757A44B005BBB4A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A01757A432005BBB4A /* CoreGraphics.framework */; };
+		C5C267A51757A451005BBB4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A21757A43E005BBB4A /* UIKit.framework */; };
+		C5C267A71757A45C005BBB4A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A61757A45C005BBB4A /* ImageIO.framework */; };
+		C5C267A81757A463005BBB4A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A61757A45C005BBB4A /* ImageIO.framework */; };
+		C5C267AA1757A46A005BBB4A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A91757A46A005BBB4A /* CoreText.framework */; };
+		C5C267AB1757A471005BBB4A /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267A91757A46A005BBB4A /* CoreText.framework */; };
+		C5C267AD1757A480005BBB4A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267AC1757A480005BBB4A /* QuartzCore.framework */; };
+		C5C267AE1757A487005BBB4A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C267AC1757A480005BBB4A /* QuartzCore.framework */; };
 		CD6EA69BB500469E9AEA1EF8 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60426E9B6604E52ADD8A63F /* libPods.a */; };
 		FFAC3D8A89A54BA0973EF314 /* libPods-StateMachineTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E77622C3F81426C94A2727E /* libPods-StateMachineTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		A001F2161630DB11002AEC31 /* PBXContainerItemProxy */ = {
+		C59F9A0B17579F7800C175D5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A001F1F61630DB10002AEC31 /* Project object */;
 			proxyType = 1;
@@ -57,23 +64,17 @@
 		A001F21B1630DB11002AEC31 /* StateMachineTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "StateMachineTests-Info.plist"; sourceTree = "<group>"; };
 		A001F21D1630DB11002AEC31 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A001F2201630DB11002AEC31 /* StateMachineSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StateMachineSpec.m; sourceTree = "<group>"; };
-		A05206BC164363FF00D5E855 /* LSStateMachineDynamicAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSStateMachineDynamicAdditions.h; sourceTree = "<group>"; };
-		A05206BD164363FF00D5E855 /* LSStateMachineDynamicAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachineDynamicAdditions.m; sourceTree = "<group>"; };
-		A066CFEB163D84D00061797C /* LSStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSStateMachine.h; sourceTree = "<group>"; };
-		A066CFEC163D84D00061797C /* LSStateMachine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachine.m; sourceTree = "<group>"; };
 		A066CFEE163D850B0061797C /* LSStateMachineSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSStateMachineSpec.m; sourceTree = "<group>"; };
-		A066CFF1163D85F90061797C /* StateMachine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = StateMachine.h; path = StateMachine/StateMachine.h; sourceTree = "<group>"; };
 		A066CFF2163D8FF50061797C /* LSEventSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSEventSpec.m; sourceTree = "<group>"; };
-		A066CFF4163D90190061797C /* LSEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSEvent.h; sourceTree = "<group>"; };
-		A066CFF5163D90190061797C /* LSEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSEvent.m; sourceTree = "<group>"; };
 		A066CFF7163D94070061797C /* LSTransitionSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransitionSpec.m; sourceTree = "<group>"; };
-		A066CFF9163D941D0061797C /* LSTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSTransition.h; sourceTree = "<group>"; };
-		A066CFFA163D941D0061797C /* LSTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSTransition.m; sourceTree = "<group>"; };
-		A0BBF3581648C2D600DED3C2 /* LSStateMachineTypedefs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineTypedefs.h; sourceTree = "<group>"; };
-		A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStateMachineMacros.h; sourceTree = "<group>"; };
 		B3F36D43D1564548965A5F07 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		C57BC1EA16DE23BA00B690E0 /* LSStative.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LSStative.h; sourceTree = "<group>"; };
-		C5EB006B16FE03B600DF3E4A /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; };
+		C59F9A201757A3B200C175D5 /* stub.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = stub.m; sourceTree = "<group>"; };
+		C5C267A01757A432005BBB4A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		C5C267A21757A43E005BBB4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		C5C267A61757A45C005BBB4A /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		C5C267A91757A46A005BBB4A /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		C5C267AC1757A480005BBB4A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		C5EB006B16FE03B600DF3E4A /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C5EB006C16FE03B600DF3E4A /* StateMachine-GCDThreadsafe.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; fileEncoding = 4; path = "StateMachine-GCDThreadsafe.podspec"; sourceTree = "<group>"; };
 		D60426E9B6604E52ADD8A63F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -83,6 +84,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5C267AE1757A487005BBB4A /* QuartzCore.framework in Frameworks */,
+				C5C267AA1757A46A005BBB4A /* CoreText.framework in Frameworks */,
+				C5C267A81757A463005BBB4A /* ImageIO.framework in Frameworks */,
+				C5C267A31757A43E005BBB4A /* UIKit.framework in Frameworks */,
+				C5C267A11757A432005BBB4A /* CoreGraphics.framework in Frameworks */,
 				A001F2031630DB10002AEC31 /* Foundation.framework in Frameworks */,
 				CD6EA69BB500469E9AEA1EF8 /* libPods.a in Frameworks */,
 			);
@@ -92,6 +98,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5C267AD1757A480005BBB4A /* QuartzCore.framework in Frameworks */,
+				C5C267AB1757A471005BBB4A /* CoreText.framework in Frameworks */,
+				C5C267A71757A45C005BBB4A /* ImageIO.framework in Frameworks */,
+				C5C267A51757A451005BBB4A /* UIKit.framework in Frameworks */,
+				C5C267A41757A44B005BBB4A /* CoreGraphics.framework in Frameworks */,
 				A001F2121630DB11002AEC31 /* SenTestingKit.framework in Frameworks */,
 				A001F2151630DB11002AEC31 /* Foundation.framework in Frameworks */,
 				A001F2181630DB11002AEC31 /* libStateMachine.a in Frameworks */,
@@ -105,9 +116,14 @@
 		A001F1F41630DB10002AEC31 = {
 			isa = PBXGroup;
 			children = (
+				C5C267AC1757A480005BBB4A /* QuartzCore.framework */,
+				C5C267A91757A46A005BBB4A /* CoreText.framework */,
+				C5C267A61757A45C005BBB4A /* ImageIO.framework */,
+				C5C267A21757A43E005BBB4A /* UIKit.framework */,
+				C5C267A01757A432005BBB4A /* CoreGraphics.framework */,
+				C59F9A201757A3B200C175D5 /* stub.m */,
 				C5EB006B16FE03B600DF3E4A /* Podfile */,
 				C5EB006C16FE03B600DF3E4A /* StateMachine-GCDThreadsafe.podspec */,
-				A066CFF1163D85F90061797C /* StateMachine.h */,
 				A001F2041630DB10002AEC31 /* StateMachine */,
 				A001F2191630DB11002AEC31 /* StateMachineTests */,
 				A001F2011630DB10002AEC31 /* Frameworks */,
@@ -141,17 +157,6 @@
 			isa = PBXGroup;
 			children = (
 				A001F2051630DB10002AEC31 /* Supporting Files */,
-				A066CFEB163D84D00061797C /* LSStateMachine.h */,
-				C57BC1EA16DE23BA00B690E0 /* LSStative.h */,
-				A066CFEC163D84D00061797C /* LSStateMachine.m */,
-				A066CFF4163D90190061797C /* LSEvent.h */,
-				A066CFF5163D90190061797C /* LSEvent.m */,
-				A066CFF9163D941D0061797C /* LSTransition.h */,
-				A066CFFA163D941D0061797C /* LSTransition.m */,
-				A0C8CA39163DE6F50027B912 /* LSStateMachineMacros.h */,
-				A05206BC164363FF00D5E855 /* LSStateMachineDynamicAdditions.h */,
-				A05206BD164363FF00D5E855 /* LSStateMachineDynamicAdditions.m */,
-				A0BBF3581648C2D600DED3C2 /* LSStateMachineTypedefs.h */,
 			);
 			path = StateMachine;
 			sourceTree = "<group>";
@@ -219,7 +224,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				A001F2171630DB11002AEC31 /* PBXTargetDependency */,
+				C59F9A0C17579F7800C175D5 /* PBXTargetDependency */,
 			);
 			name = StateMachineTests;
 			productName = StateMachineTests;
@@ -313,10 +318,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A066CFED163D84D00061797C /* LSStateMachine.m in Sources */,
-				A066CFF6163D90190061797C /* LSEvent.m in Sources */,
-				A066CFFB163D941D0061797C /* LSTransition.m in Sources */,
-				A05206BE164363FF00D5E855 /* LSStateMachineDynamicAdditions.m in Sources */,
+				C59F9A211757A3B200C175D5 /* stub.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,10 +336,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A001F2171630DB11002AEC31 /* PBXTargetDependency */ = {
+		C59F9A0C17579F7800C175D5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A001F1FE1630DB10002AEC31 /* StateMachine */;
-			targetProxy = A001F2161630DB11002AEC31 /* PBXContainerItemProxy */;
+			targetProxy = C59F9A0B17579F7800C175D5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

@@ -1,4 +1,5 @@
 #import "LSTransition.h"
+#import "StateMachine-Private.h"
 
 @implementation LSTransition
 + (id)transitionFrom:(NSString *)from to:(NSString *)to {

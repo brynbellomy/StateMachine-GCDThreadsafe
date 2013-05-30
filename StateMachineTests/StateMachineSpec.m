@@ -1,9 +1,9 @@
 
 #import <BrynKit/BrynKit.h>
 #import <BrynKit/GCDThreadsafe.h>
+#import "StateMachine.h"
 
 #import "Kiwi.h"
-#import "StateMachine.h"
 
 @interface Subscription : NSObject <SEThreadsafeStateMachine>
 @property (nonatomic, retain) NSDate *terminatedAt;
@@ -29,7 +29,7 @@
 @end
 
 @implementation Subscription
-@gcd_threadsafe
+@gcd_threadsafe(queueCritical)
 
 
 STATE_MACHINE(^(LSStateMachine *sm) {
@@ -75,7 +75,7 @@ STATE_MACHINE(^(LSStateMachine *sm) {
 
 
 SPEC_BEGIN(StateMachineSpec)
-context(@"given a Subscripion", ^{
+context(@"given a Subscription", ^{
     __block Subscription *sut = nil;
     beforeEach(^{
         sut = [[Subscription alloc] init];
@@ -534,7 +534,7 @@ context(@"given a Subscripion", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut activate];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                 });
             });
@@ -547,7 +547,7 @@ context(@"given a Subscripion", ^{
                         [[[sut should] receive] stopBilling];
 
                         [sut suspend];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                 });
             });
@@ -556,13 +556,13 @@ context(@"given a Subscripion", ^{
                     beforeEach(^{
                         [sut activate];
                         [sut suspend];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut unsuspend];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                 });
             });
@@ -570,26 +570,28 @@ context(@"given a Subscripion", ^{
                 describe(@"from'active'", ^{
                     beforeEach(^{
                         [sut activate];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                     it(@"should not call stopBillin", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut terminate];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                 });
                 describe(@"from 'suspended'", ^{
                     beforeEach(^{
                         [sut activate];
                         [sut suspend];
-                        [sut runCriticalReadonlySection:^{}];
+//                        [sut runCriticalReadSection:^{}];
                     });
                     it(@"should not call stopBilling", ^{
                         [[[sut shouldNot] receive] stopBilling];
 
                         [sut terminate];
-                        [sut runCriticalReadonlySection:^{}];
+
+                        
+                        [sut runCriticalReadSection:^{}];
                     });
                 });
             });

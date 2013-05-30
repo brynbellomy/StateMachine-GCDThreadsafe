@@ -17,7 +17,7 @@
 \
 - (NSString *) state {\
     __block NSString *state;\
-    [self runCriticalReadonlySection:^{\
+    [self runCriticalReadSection:^{\
         state = [_state copy];\
     }];\
     return state;\

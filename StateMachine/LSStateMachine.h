@@ -1,9 +1,10 @@
 #import <Foundation/Foundation.h>
+#import <CocoaLumberjack/DDLog.h>
 #import "LSStateMachineTypedefs.h"
 
 @class LSEvent;
 
-@interface LSStateMachine : NSObject
+@interface LSStateMachine : NSObject <DDRegisteredDynamicLogging>
 @property (nonatomic, strong, readonly) NSSet *states;
 @property (nonatomic, strong, readonly) NSSet *events;
 @property (nonatomic, strong) NSString *initialState;
@@ -17,3 +18,11 @@
 - (NSString *)nextStateFrom:(NSString *)from forEvent:(NSString *)event;
 
 @end
+
+
+
+@class LSStateMachine;
+
+#define StateMachine_LOG_CONTEXT 6868
+
+

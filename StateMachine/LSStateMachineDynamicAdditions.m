@@ -1,7 +1,9 @@
 #import <objc/runtime.h>
 #import <BrynKit/GCDThreadsafe.h>
+#import <BrynKit/BrynKit.h>
 #import <libextobjc/EXTScope.h>
 
+#import "StateMachine-Private.h"
 #import "LSStateMachineDynamicAdditions.h"
 #import "LSStateMachine.h"
 #import "LSEvent.h"
@@ -19,7 +21,7 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     [(NSObject *)self willChangeValueForKey:@"state"];
 
     @weakify(self);
-    [self runCriticalReadonlySection:^{
+    [self runCriticalReadSection:^{
         @strongify(self);
 
         NSString *eventName    = NSStringFromSelector(_cmd);
@@ -41,6 +43,14 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
             }
             success = YES;
         } else {
+            lllog(Warn, @"no nextState found (current state = %@, event = %@)", currentState, eventName);
+
+            for (NSString *state in sm.states) {
+                lllog(Warn, @"state = %@", state);
+            }
+            for (LSEvent *event in sm.events) {
+                lllog(Warn, @"event = %@", event.name);
+            }
             success = NO;
         }
     }];
@@ -53,7 +63,7 @@ BOOL LSStateMachineTriggerEvent(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
 // This is the implementation of the initializeStateMachine instance method
 void LSStateMachineInitializeInstance(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     @weakify(self);
-    [self runCriticalMutableSection:^{
+    [self runCriticalReadSection:^{
         @strongify(self);
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         self.state = sm.initialState;
@@ -65,10 +75,15 @@ BOOL LSStateMachineCheckState(id<GCDThreadsafe, LSStative> self, SEL _cmd) {
     __block BOOL is;
 
     @weakify(self);
-    [self runCriticalReadonlySection:^{
+    [self runCriticalReadSection:^{
         @strongify(self);
-        NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:2] lowercaseString];
-        is = [query isEqualToString:[self.state lowercaseString]];
+//        NSString *currentState = self.state;
+        NSString *query = [NSStringFromSelector(_cmd) substringFromIndex:2];
+        NSString *head = [[query substringToIndex:1] lowercaseString];
+        NSString *tail = [query substringFromIndex:1];
+        query = [head stringByAppendingString:tail];
+
+        is = [query isEqualToString:self.state];
     }];
     return is;
 }
@@ -78,11 +93,14 @@ BOOL LSStateMachineCheckCanTransition(id<GCDThreadsafe, LSStative> self, SEL _cm
     __block NSString *nextState;
 
     @weakify(self);
-    [self runCriticalReadonlySection:^{
+    [self runCriticalReadSection:^{
         @strongify(self);
         LSStateMachine *sm = [[self class] performSelector:@selector(stateMachine)];
         NSString *currentState = self.state;
-        NSString *query = [[NSStringFromSelector(_cmd) substringFromIndex:3] lowercaseString];
+        NSString *query = [NSStringFromSelector(_cmd) substringFromIndex:3];
+        NSString *head = [[query substringToIndex:1] lowercaseString];
+        NSString *tail = [query substringFromIndex:1];
+        query = [head stringByAppendingString:tail];
 
         nextState = [sm nextStateFrom:currentState forEvent:query];
     }];
@@ -96,12 +114,16 @@ void LSStateMachineInitializeClass(Class klass) {
     for (LSEvent *event in sm.events) {
         class_addMethod(klass, NSSelectorFromString(event.name), (IMP) LSStateMachineTriggerEvent, "i@:");
 
-        NSString *transitionQueryMethodName = [NSString stringWithFormat:@"can%@", [event.name capitalizedString]];
+        NSString *head = [[event.name substringToIndex:1] capitalizedString];
+        NSString *tail = [event.name substringFromIndex:1];
+        NSString *transitionQueryMethodName = [NSString stringWithFormat:@"can%@%@", head, tail];
         class_addMethod(klass, NSSelectorFromString(transitionQueryMethodName), (IMP) LSStateMachineCheckCanTransition, "i@:");
     }
 
     for (NSString *state in sm.states) {
-        NSString *queryMethodName = [NSString stringWithFormat:@"is%@", [state capitalizedString]];
+        NSString *head = [[state substringToIndex:1] capitalizedString];
+        NSString *tail = [state substringFromIndex:1];
+        NSString *queryMethodName = [NSString stringWithFormat:@"is%@%@", head, tail];
         class_addMethod(klass, NSSelectorFromString(queryMethodName), (IMP) LSStateMachineCheckState, "i@:");
     }
     class_addMethod(klass, @selector(initializeStateMachine), (IMP) LSStateMachineInitializeInstance, "v@:");

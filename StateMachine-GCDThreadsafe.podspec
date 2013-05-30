@@ -6,7 +6,7 @@
 Pod::Spec.new do |s|
     s.platform     = :ios, "5.1"
     s.name         = "StateMachine-GCDThreadsafe"
-    s.version      = "2.0.2"
+    s.version      = "2.0.3"
     s.summary      = "Threadsafe state machine library for Objective-C based on Grand Central Dispatch."
     s.homepage     = "https://github.com/brynbellomy/StateMachine-GCDThreadsafe"
     s.license      = { :type => 'MIT', :file => 'LICENSE' }
@@ -14,16 +14,18 @@ Pod::Spec.new do |s|
     s.authors      = [ { "Luis Solano Bonet" => "contact@luissolano.com" }, { "bryn austin bellomy" => "bryn@signals.io" } ]
     s.source       = { :git => "https://github.com/brynbellomy/StateMachine-GCDThreadsafe.git", :tag => "v#{s.version}" }
 
-    s.source_files = 'StateMachine/**/*.{h,m}'
+    s.source_files = 'StateMachine/*.{h,m}'
 
-    s.public_header_files = %w[
-        StateMachine/StateMachine.h
-        StateMachine/LSStateMachine.h
-        StateMachine/LSStateMachineMacros.h
-        StateMachine/LSStateMachineTypedefs.h
-        StateMachine/LSStative.h
-        StateMachine/LSStateMachineDynamicAdditions.h
-    ]
+    # s.public_header_files = %w[
+    #     StateMachine/StateMachine.h
+    #     StateMachine/LSStateMachine.h
+    #     StateMachine/LSStateMachineMacros.h
+    #     StateMachine/LSStateMachineTypedefs.h
+    #     StateMachine/LSStative.h
+    #     StateMachine/LSEvent.h
+    #     StateMachine/LSTransition.h
+    #     StateMachine/LSStateMachineDynamicAdditions.h
+    # ]
 
     s.requires_arc = true
 
@@ -31,7 +33,13 @@ Pod::Spec.new do |s|
     s.dependency 'libextobjc/EXTSynthesize', '>= 0.2.5'
     s.dependency 'libextobjc/EXTBlockMethod', '>= 0.2.5'
     s.dependency 'libextobjc/NSMethodSignature+EXT', '>= 0.2.5'
-    s.dependency 'BrynKit/Main', '>= 1.2.1'
-    s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.1'
+
+    s.dependency 'BrynKit/RACHelpers'
+    s.dependency 'BrynKit/Main'
+    s.dependency 'BrynKit/GCDThreadsafe'
+    s.dependency 'BrynKit/CocoaLumberjack'
+    # s.dependency 'BrynKit/Main', '>= 1.2.6'
+    # s.dependency 'BrynKit/GCDThreadsafe', '>= 1.2.6'
+    # s.dependency 'BrynKit/CocoaLumberjack', '>= 1.2.6'
 
 end
